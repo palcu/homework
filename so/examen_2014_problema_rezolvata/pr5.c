@@ -12,22 +12,14 @@ int search(char *filename, char *str) {
     char line[256];
     int strLen = strlen(str), sol = 0;
     while (fgets(line, 256, pFile) != NULL) {
-        for (int i = 0; line[i] != NULL; i++) {
-            if (line[i] == str[0]) {
-                int indexLine = i, indexStr = 0;
-                int suntEgale = 1;
-                while (line[indexLine] != NULL && str[indexStr] != NULL) {
-                    if (line[indexLine] != str[indexStr]) {
-                        suntEgale = 0;
-                        break;
-                    }
-                    indexLine++; indexStr++;
-                }
-                if (suntEgale && indexStr == strLen)
-                    sol++;
-            }
+        char * ptr = line;
+        while ((ptr = strstr(ptr, str)) != NULL) {
+            sol += 1;
+            ptr += strlen(str);
         }
     }
+    if (sol == 0)
+        return -1;
     return sol;
 }
 
