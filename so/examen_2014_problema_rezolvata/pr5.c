@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 int search(char *filename, char *str) {
     FILE * pFile;
     pFile = fopen(filename, "r");
     if (pFile == NULL) {
-        perror("Error opening file.");
-        exit(0);
+        return -1;
     }
     char line[256];
     int strLen = strlen(str), sol = 0;
@@ -18,8 +18,8 @@ int search(char *filename, char *str) {
             ptr += strlen(str);
         }
     }
-    if (sol == 0)
-        return -1;
+    fclose(pFile);
+
     return sol;
 }
 
