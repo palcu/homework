@@ -20,4 +20,6 @@ fmod Peano is
     eq X * s(Y) = s(X + Y) + Y .
     
     eq fact(0) = 0 .
+    eq fact s 0 = s 0 .
+    eq fact X = X * fact (p X) .
 endfm
