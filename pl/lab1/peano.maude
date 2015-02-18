@@ -1,0 +1,23 @@
+fmod Peano is
+    sort Natural .
+    op 0 : -> Natural .
+    op _+_ : Natural Natural -> Natural .
+    op _-_ : Natural Natural -> Natural .
+    op s_ : Natural -> Natural .
+    op _*_ : Natural Natural -> Natural .
+    op p_ : Natural -> Natural .
+    op fact_ : Natural -> Natural .
+
+    vars X, Y : Natural .
+    eq X + 0 = X .
+    eq X - 0 = X .
+    
+    eq X + s(Y) = s(X + Y) .
+    
+    eq p s (X) = X .
+    eq p(0) = 0 .
+    
+    eq X * s(Y) = s(X + Y) + Y .
+    
+    eq fact(0) = 0 .
+endfm
