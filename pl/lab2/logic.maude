@@ -1,5 +1,6 @@
 fmod Logic is
     sort Logic .
+    subsort Atom < Logic .
     op 0 : -> Logic .
     op 1 : -> Logic .
 
@@ -17,10 +18,17 @@ fmod Logic is
 
     eq 0 | X = X .
 
-    eq X ^ 1 = ~ X .
+    eq 1 ^ 1 = 0 .
     eq X ^ 0 = X .
 
     eq 0 -> X = 1 .
     eq 1 -> 1 = 1 .
     eq 1 -> 0 = 0 .
+
+    sort Atom .
+    ops a b c d : -> Atom .
+
+    eq ~ X = X ^ 1 .
 endfm
+
+--- red 1 -> (~ a ^ ( b & ( a | b ) ) )
