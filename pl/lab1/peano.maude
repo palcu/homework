@@ -11,14 +11,14 @@ fmod Peano is
     vars X, Y : Natural .
     eq X + 0 = X .
     eq X - 0 = X .
-    
+
     eq X + s(Y) = s(X + Y) .
-    
+
     eq p s (X) = X .
     eq p(0) = 0 .
-    
+
     eq X * s(Y) = s(X + Y) + Y .
-    
+
     eq fact(0) = 0 .
     eq fact s 0 = s 0 .
     eq fact X = X * fact (p X) .

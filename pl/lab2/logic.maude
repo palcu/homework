@@ -1,0 +1,11 @@
+fmod Log is
+    sort Logic .
+    op 0 : -> Logic .
+    op 1 : -> Logic .
+
+    op _&_ : Logic Logic -> Logic .
+    op _^_ : Logic Logic -> Logic .
+    op _|_ : Logic Logic -> Logic .
+    op _->_ : Logic Logic -> Logic .
+    op ~_ : Logic -> Logic .
+endfm
