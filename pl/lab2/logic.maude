@@ -10,7 +10,7 @@ fmod Logic is
     op _->_ : Logic Logic -> Logic .
     op ~_ : Logic -> Logic .
 
-    vars X : Logic .
+    vars X Y : Logic .
     eq ~ 1 = 0 .
     eq ~ 0 = 1 .
 
@@ -29,6 +29,7 @@ fmod Logic is
     ops a b c d : -> Atom .
 
     eq ~ X = X ^ 1 .
+    eq X | Y = ~ ( (~ X) & (~ Y) ) .
 endfm
 
 --- red 1 -> (~ a ^ ( b & ( a | b ) ) )
