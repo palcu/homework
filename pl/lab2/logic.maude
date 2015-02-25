@@ -1,11 +1,26 @@
-fmod Log is
+fmod Logic is
     sort Logic .
     op 0 : -> Logic .
     op 1 : -> Logic .
 
-    op _&_ : Logic Logic -> Logic .
-    op _^_ : Logic Logic -> Logic .
-    op _|_ : Logic Logic -> Logic .
+    op _&_ : Logic Logic -> Logic [comm] .
+    op _^_ : Logic Logic -> Logic [comm] .
+    op _|_ : Logic Logic -> Logic [comm] .
     op _->_ : Logic Logic -> Logic .
     op ~_ : Logic -> Logic .
+
+    vars X : Logic .
+    eq ~ 1 = 0 .
+    eq ~ 0 = 1 .
+
+    eq 1 & X = X .
+
+    eq 0 | X = X .
+
+    eq X ^ 1 = ~ X .
+    eq X ^ 0 = X .
+
+    eq 0 -> X = 1 .
+    eq 1 -> 1 = 1 .
+    eq 1 -> 0 = 0 .
 endfm
