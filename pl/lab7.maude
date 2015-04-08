@@ -1,0 +1,48 @@
+fmod EvalExpr is
+    including INT .
+    including BOOL .
+    including MAP{Int, Int} .
+
+    sort Id .
+    subsort Id < Int .
+
+    vars X Y : Int .
+    var H : Map {Int, Int} .
+    var T : Id .
+
+    ops a b c d : -> Id .
+
+    op EvalExpr : Int Map{Int, Int} -> Int .
+    op EvalBool : Bool Map{Int, Int} -> Bool .
+    op _EgalIntregi_ : Int Int -> Bool .
+
+    eq EvalExpr(X + Y, H) = EvalExpr(X, H) + EvalExpr(Y, H) .
+    eq EvalExpr(X * Y, H) = EvalExpr(X, H) * EvalExpr(Y, H) .
+    eq EvalExpr(X - Y, H) = EvalExpr(X, H) - EvalExpr(Y, H) .
+    eq EvalExpr(X quo Y, H) = EvalExpr(X, H) quo EvalExpr(Y, H) .
+    
+    eq EvalBool(X EgalIntregi Y, H) = EvalExpr(X, H) == EvalExpr(Y, H) .
+    eq EvalBool(X <= Y, H) = EvalExpr(X, H) <= EvalExpr(Y, H) .
+    eq EvalBool(X >= Y, H) = EvalExpr(X, H) >= EvalExpr(Y, H) .
+    eq EvalBool(X < Y, H) = EvalExpr(X, H) < EvalExpr(Y, H) .
+    eq EvalBool(X > Y, H) = EvalExpr(X, H) > EvalExpr(Y, H) .
+    
+    eq EvalExpr(T, H) = H[T] .
+    eq EvalExpr(Y, H) = Y [owise] .
+
+    sort Instr .
+
+    vars I1 I2 : Instr .
+    vars B : Bool .
+
+    op _:=_ : Id Int -> Instr .
+    op if_then_else_ : Bool Instr Instr -> Instr .
+    op EvalInstr : Instr Map{Int, Int} -> Map {Int, Int} .
+    op _;_ : Instr Instr -> Instr .
+
+    eq EvalInstr(T := X, H) = insert(T, EvalExpr(X, H), H) .
+    eq EvalInstr(if B then I1 else I2, H) = if EvalBool(B, H) then EvalInstr(I1, H) 
+                                            else EvalInstr(I2, H) fi .
+    eq EvalInstr(I1 ; I2, H) = EvalInstr ( I2, EvalInstr ( I1 , H ) ) .
+endfm
+
