@@ -1,0 +1,28 @@
+fmod PAIR is
+	including INT .
+	sort Pair .
+
+	op _,_ : Int Int -> Pair .
+
+endfm
+
+view Pair from TRIV to PAIR is
+		sort Elt to Pair .
+endv
+
+mod HANOI is
+
+	including INT .
+	including MAP{Int, Pair} .
+
+	var H : Map{Int, Pair} .
+	vars i j : Int .
+	vars C1 C2 : Int .
+	vars M1 M2 : Int .
+
+	crl (i |-> (C1, M1), j |-> (C2, M2)) =>  (i |-> ( 0, M1), j |-> (C1 + C2, M2))
+				if (C1 + C2 <= M2) .
+	crl (i |-> (C1, M1), j |-> (C2, M2)) =>  (i |-> ( C1 - (M2 - C2), M1), j |-> (M2, M2))
+				if (C1 - (M2 - C2) >= 0) .
+
+endm
