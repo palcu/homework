@@ -1,0 +1,93 @@
+fmod Pula is
+    including LIST{Int} .
+    including BOOL .
+    including INT .
+    including MAP{Int, Int} .
+
+    op lasttwo : List{Int} -> List{Int} .
+    op lastbutone : List{Int} -> Int .
+    op elementat : List{Int} Int -> Int .
+    op len : List{Int} -> Int .
+    op reverse : List{Int} -> List{Int} .
+    op ispalindrom : List{Int} -> Bool .
+    op elimconseq : List{Int} -> List{Int} .
+    op duplic : List{Int} -> List{Int} .
+    op multiplica : List{Int} Int Int -> List{Int} .
+    op headn : List{Int} Int -> List{Int} .
+    op tailn : List{Int} Int -> List{Int} .
+
+    vars X Y Z A B : Int .
+    vars L1 L2 L : List{Int} .
+    vars M : Map{Int, Int} .
+    
+    --- exercitii de pe aici http://www.ic.unicamp.br/~meidanis/courses/mc336/2009s2/prolog/problemas/
+    eq lasttwo ( L1 X Y ) = X Y .
+    eq lastbutone ( L1 X Y ) = X .
+
+    eq elementat ( X L1, 0 ) = X .
+    eq elementat ( X L1, Y ) = elementat ( L1, Y + - 1 ) .
+
+    eq len ( nil ) = 0 .
+    eq len ( X L1 ) = 1 + len ( L1 ) . 
+
+    eq reverse ( nil ) = nil .
+    eq reverse ( X L1 ) = reverse(L1) X .
+
+    eq ispalindrom ( L1 ) = ( L1 == reverse(L1) ) .
+
+    eq elimconseq ( X X L1 ) = ( elimconseq(X L1) ) .
+    eq elimconseq ( X Y L1 ) = ( X elimconseq(Y L1) ) .
+    eq elimconseq ( X L1 ) = X elimconseq(L1) .
+    eq elimconseq ( nil ) = nil .
+
+    eq duplic ( X L1 ) = X X duplic(L1) .
+    eq duplic ( nil ) = nil nil .
+    
+    eq multiplica ( X L1, 1, Z ) = X multiplica ( L1, Z, Z ) .
+    eq multiplica ( X L1, Y, Z ) = X multiplica ( X L1 , Y + - 1, Z ) .
+    eq multiplica ( nil, Y, Z ) = nil .
+
+    eq headn ( L1 , 0 ) = nil .
+    eq headn ( nil , Y ) = nil .
+    eq headn ( X L1 , Y ) = X headn( L1 , Y + - 1 ) .
+
+    eq tailn ( L1 , 0 ) = L1 .
+    eq tailn ( nil , Y ) = nil .
+    eq tailn ( X L1 , Y ) = tailn ( L1 , Y + - 1 ) .
+
+
+    --- numarul de cifre al unui numar intreg
+    op lenint : Int -> Int .
+    op lenintin : Int Int -> Int .
+    eq lenint ( X ) = lenintin ( X, 0 ) .
+    eq lenintin ( 0, Y ) = Y .
+    eq lenintin ( X, Y ) = lenintin ( X quo 10 , Y + 1 ) .
+   
+    --- numara numarul de cifre dintr-un numar
+    op countDigits : Int -> Map{Int, Int} .
+    op intToList : Int -> List{Int} .
+    op intToListI1 : Int List{Int} -> List{Int} .
+    op countDigitsI1 : List{Int} Map{Int, Int} -> Map{Int, Int} .
+    op generateDigits : Int Map{Int, Int} -> Map{Int, Int} .
+    
+    op incrementInHash : Map{Int, Int} Int -> Map{Int, Int} .
+    eq incrementInHash ( M, X ) = insert(X, M[X] + 1, M) .
+    
+    eq intToList ( X ) = intToListI1 ( X, nil ) .
+    eq intToListI1 ( 0 , L1 ) = reverse ( L1 ) .
+    eq intToListI1 ( X , L1 ) = intToListI1 ( X quo 10, L1 (X rem 10) ) .
+    
+    eq generateDigits ( 0 , M ) = insert ( 0, 0, M ) .
+    eq generateDigits ( X , M ) = generateDigits( X + - 1 , insert ( X, 0, M ) ) .
+    
+    eq countDigits ( X ) = countDigitsI1( intToList(X), generateDigits(9, empty) ) .
+    eq countDigitsI1 ( nil , M ) = M .
+    eq countDigitsI1 ( L1 , M ) = countDigitsI1 ( tail(L1) , incrementInHash ( M , head ( L1 ) ) ) .
+
+    --- swap doua pozitii dintr-un vector
+    op fromPosToPos : List{Int} Int Int -> List{Int} .
+    eq fromPosToPos ( L , X , Y ) = tailn ( headn ( L , Y + 1 ) , X ) .
+
+    op swapList : List{Int} Int Int -> List{Int} .
+    eq swapList ( L , X , Y ) = fromPosToPos( L , 0 , X + - 1 ) elementat ( L , Y ) fromPosToPos ( L , X + 1 , Y + - 1 ) elementat ( L , X ) fromPosToPos ( L , Y + 1 , size(L) + - 1 ) .
+endfm
