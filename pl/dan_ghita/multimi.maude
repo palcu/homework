@@ -1,0 +1,36 @@
+fmod Multimi is
+    
+    including INT .
+    including BOOL .
+    including LIST{Int} .
+    including MAP{Int, Int} .
+    including SET{Int} .
+
+    op filter : List{Int} Set{Int} -> List{Int} .
+    op factorPrim : Int Int Map{Int, Int} -> Map{Int, Int} .
+    op factor : Int -> Map{Int, Int} .
+    op prim : Int Int Map{Int, Int} -> Bool .
+    op update : Int Map{Int, Int} -> Map{Int, Int} .
+
+    vars x d K : Int .
+    var L : List{Int} .
+    var S : Set{Int} .
+    var M : Map{Int, Int} .
+
+
+    eq update (K, (M, K |-> x)) = (M, K |-> s(x)) .
+    eq update (K, M) = (M, K |-> 1) [owise] . 
+
+    eq filter (nil, S) = nil .
+    eq filter ((x L), (x, S)) = (x filter (L, S)) .
+    eq filter ((x L), S) = filter (L, S) [owise] .
+
+
+    eq factorPrim(1, d, M) = M .
+    eq factorPrim(x, x, M) = update(x, M) .
+    eq factorPrim (x, d, M) = if (x rem d == 0) then factorPrim(x quo d, d, update(d, M)) else factorPrim(x, s(d), M) fi .
+
+    eq factor(x) = factorPrim(x, 2, empty) .
+
+
+endfm

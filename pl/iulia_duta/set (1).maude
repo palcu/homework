@@ -1,0 +1,35 @@
+fmod Multime is
+	including LIST{Int} .
+	including SET{Int} .
+	including MAP{Int, Int} .
+
+	op filter : List{Int} Set{Int} -> List{Int} .
+	op compress : List{Int} -> Map{Int, Int} .
+	op factor2 : Int Int -> List{Int} .
+	op factor : Int -> Map{Int, Int} .
+
+
+	var A : List{Int} .
+	var B : Set{Int} .
+	var H : Map{Int, Int} .
+	vars x, y : Int .
+	var Prim : Map{Int, Int} .
+
+	eq filter(A x, B) = if ( x in B ) then (filter(A, B) x)
+						else filter(A, B) fi .
+	eq filter(nil, B) = nil .
+	ceq compress(A x) =  if ($hasMapping(H, x)) then 
+							insert(x, H[x] + 1, H) 
+						else 
+							insert(x, 1, H)  fi 
+	  if H := compress(A) .
+	eq compress(nil) = empty .
+	eq factor2(x, x + 1) = nil .
+	eq factor2(x, y) = if (x divides y) then factor2(x quo y, y) y 
+						else factor2(x, y + 1) fi .
+	
+	eq factor(x) = compress(factor2(x, 2)) .
+	
+
+endfm
+

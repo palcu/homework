@@ -1,0 +1,23 @@
+fmod INTLIST is
+	including LIST{Int} .
+endfm
+
+view IntList from TRIV to INTLIST is
+		sort Elt to List{Int} .
+endv
+
+mod HANOI is
+
+	including INT .
+	including MAP{Int, IntList} .
+
+	var H : Map{Int, IntList} .
+	vars L1 L2 : List{Int} .
+	vars i j : Int .
+
+	crl (i |-> L1, j |-> L2) =>  (i |-> tail(L1), j |-> append(head(L1),  L2))
+				if(head(L1) < head(L2)) .
+	crl (i |-> L1, j |-> L2) =>  (i |-> tail(L1), j |-> append(head(L1),  L2))
+				if(L2 == nil) .
+
+endm

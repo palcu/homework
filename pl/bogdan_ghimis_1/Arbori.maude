@@ -1,0 +1,42 @@
+fmod ARBORE is
+    including INT .
+    including BOOL .
+    including LIST{Int} .
+
+    sort Arbore .
+    subsort Int < Arbore .
+
+    op Nil : -> Arbore .
+    op (_, _, _) : Arbore Int Arbore -> Arbore .
+    op st : Arbore -> Arbore .
+    op dr : Arbore -> Arbore .
+    op val : Arbore -> Int .
+    op adancime : Arbore -> Int .
+    op frunza : Arbore -> Bool .
+    op rsd : Arbore -> List{Int} .
+    op srd : Arbore -> List{Int} .
+    op sdr : Arbore -> List{Int} .
+
+    vars X Y Z : Int .
+    vars ST DR A : Arbore .
+        
+    eq st (ST, X, DR) = ST .
+    eq dr (ST, X, DR) = DR .
+    eq val (ST, X, DR) = X .
+    
+    eq adancime (Nil) = 0 .
+    eq adancime (ST, X, DR) = 1 + max(adancime(ST), adancime(DR)) .
+
+    eq frunza (Nil, X, Nil) = true .
+    eq frunza (A) = false .
+
+    eq rsd (Nil) = nil .
+    eq rsd (ST, X, DR) = X rsd(ST) rsd(DR) .
+
+    eq srd (Nil) = nil .
+    eq srd (ST, X, DR) = srd(ST) X srd(DR) .
+
+    eq sdr (Nil) = nil .
+    eq sdr (ST, X, DR) = sdr(ST) sdr(DR) X .
+    
+endfm

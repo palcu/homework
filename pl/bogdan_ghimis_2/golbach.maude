@@ -1,0 +1,7 @@
+mod GB is
+    including INT .
+    var n : Int .
+
+    crl n => n quo 2 if n rem 2 = 0 .
+    crl n => n * 3 + 1 if n rem 2 = 1 .
+endm

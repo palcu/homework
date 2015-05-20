@@ -1,0 +1,38 @@
+fmod BIT is
+    sort Bit .
+    op 0 : -> Bit .
+    op 1 : -> Bit .
+endfm
+
+view Bit from TRIV to BIT is
+    sort Elt to Bit .
+endv
+
+fmod BINAR is
+    
+    including BIT .
+    including LIST{Bit} .
+    sort Binar .
+    subsort Bit < Binar .
+    op [_] : NeList{Bit} -> Binar [ctor] .
+    op _+_ : Binar Binar -> Binar .
+
+    var L = List{Bit} .
+    vars A B : Binar .
+
+    eq [0 L] = [L] .
+    ceq (A 1) + (B 1) = ( ( A + B ) + 1 ) 1 . 
+
+
+
+
+endfm
+
+
+A: (1 0) 1
+B:   (1) 1
+    -----
+    (A + B) + 1 0
+    (1) 0
+     nil   1
+     (1 + nil) 1   

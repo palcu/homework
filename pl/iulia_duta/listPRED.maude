@@ -1,0 +1,116 @@
+fmod INTLIST is
+	including LIST{Int} .
+endfm
+
+view IntList from TRIV to INTLIST is
+		sort Elt to List{Int} .
+endv 
+
+fmod PAIR is
+
+including INT .
+sort Pair .
+
+op _makePair_ : Int Int -> Pair .
+op first : Pair -> Int .
+op second : Pair -> Int .
+
+vars A B : Int .
+
+eq first(A makePair B) = A .
+eq second(A makePair B) = B .
+
+endfm
+
+view Pair from TRIV to PAIR is
+	sort Elt to Pair .
+endv
+
+mod List2 is
+
+including INT .
+including LIST{Pair} .
+including LIST{Int} .
+including NAT .
+including LIST{IntList} .
+
+subsort List{Int} < List{IntList} .
+
+var P : Pair .
+var LP : List{Pair} .
+vars a k : Nat .
+var L A B : List{Int} .
+vars L1 L2 : List{IntList} .
+vars k1 k2 E : Int .
+
+op _;_ : List{IntList} List{IntList} -> List{IntList} [assoc] .
+op unCompress : List{Pair} -> List{Int} .
+op multiply : List{Int} Nat -> List{Int} .
+op listOfK : Nat Nat -> List{Int} .
+op split : List{Int} Nat -> List{IntList} .
+op push : Nat List{IntList} -> List{IntList} .
+op head : List{IntList} -> List{Int} .
+op tail : List{IntList} -> List{IntList} .
+op slice : List{Int} Int Int -> List{Int} .
+op deleteK : List{Int} Nat -> List{Int} .
+op combin : List{Int} Nat -> List{IntList} .
+op add : List{Int} List{IntList} -> List{IntList} .
+op reduc :  List{IntList} -> List{IntList} .
+op prodCart : List{IntList} List{IntList} -> List{IntList} .
+op bubblesort : List{IntList} -> List{IntList} .
+
+op err : -> Int .
+
+
+eq unCompress(P LP) = if( first(P) == 1) then (second(P) unCompress(LP))
+						else (second(P) unCompress( ((first(P) + (- 1)) makePair second(P)) LP))
+						fi .
+eq unCompress(nil) = nil .
+
+eq listOfK(a, 1) = a .
+eq listOfK(a, 0) = nil . 
+eq listOfK(a, k) = a listOfK(a, k + (-1)) .
+
+eq multiply(a L, k) = listOfK (a, k) multiply(L, k) .
+eq multiply(nil, k) = nil .
+
+eq push(k, L1) = (k head(L1)) ; tail(L1) .
+eq head(L ; L1) = L .
+eq tail(L ; L1) = L1 .
+eq split(L, 1) = head(L) ; tail(L) . 
+eq split(L, k) = push(head(L), split(tail(L), k + (-1))) .
+
+eq slice(L, 1, 0) = nil .
+eq slice(L, 1, k2) = head(L) slice(tail(L), 1, k2 + (-1)) .
+eq slice(L, k1, k2) = slice(tail(L), k1 + (-1), k2 + (-1)) .
+
+ceq deleteK(L1 E L2, k) = L1 L2 if (size(L1) == (k + (-1))) .
+
+eq add(k, err) = err .
+eq add(k, L) = (k L) .
+eq add(k, L ; L1) = (k L) ; add (k, L1) .
+eq add(L, A) = (L A) . 
+eq add(L, A ; L1) = (L A) ; add(L, L1) . 
+
+
+eq combin(L, 0) = nil .
+ceq combin(nil, k) = err if k > 0 .
+ceq combin(E L, k) = add(E, combin(L, k + (-1))) ; combin(L, k) if k > 0.
+
+ceq reduc(L1 ; L ; L2) = reduc (L1 ; L2) if last(L) == err .
+
+eq prodCart (L, L2) = add(L, L2) .
+eq prodCart(L ; L1, L2) = add(L, L2) ; prodCart(L1, L2) .
+
+eq bubblesort(nil) = nil .
+eq bubblesort(L) = L.
+ceq bubblesort(A ; B) = bubblesort(B ; A) 
+							if (size(A) > size(B)) .
+ceq bubblesort(A ; B ; L2) = bubblesort(B ; A ; L2) 
+							if (size(A) > size(B)) .
+ceq bubblesort(L1 ; A ; B) = bubblesort(L1 ; B ; A) 
+							if (size(A) > size(B)) .
+ceq bubblesort(L1 ; A ; B ; L2) = bubblesort(L1 ; B ; A ; L2) 
+							if (size(A) > size(B)) .	 
+
+endm

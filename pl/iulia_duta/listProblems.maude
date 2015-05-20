@@ -1,0 +1,95 @@
+fmod PAIR  is
+	including NAT .
+	sort Pair .
+	op _add_ : Nat Nat -> Pair .
+endfm
+
+view Pair from TRIV to PAIR is
+	sort Elt to Pair .
+endv
+
+fmod lists is
+
+including INT .
+including NAT .
+including BOOL .
+including LIST{Pair} .
+
+sort List .
+sort ListOfList .
+
+subsort Int < List .
+subsort List < ListOfList .
+
+op nil : -> List .
+op __ : List List -> List [assoc id: nil] .
+op lastEl : List -> Int .
+op lastButOne : List -> Int .
+op Kth : List Nat -> Int .
+op length : List -> Nat .
+op reverse : List -> List .
+op isEqual : List List -> Bool .
+op isPalindrom : List -> Bool .
+op compress : List -> List .
+op _;_ : ListOfList ListOfList -> ListOfList [assoc id: vid] . 
+op pack : List -> ListOfList .
+op headLOL : ListOfList -> List .
+op headL : List -> Nat .
+op tailLOL : ListOfList -> ListOfList .
+op compress2 : List -> ListOfList .
+op compressType2 : ListOfList -> ListOfList .
+
+op vid : -> ListOfList . 
+
+
+vars E E1 E2 k : Int .
+vars L L1 L2 : List .
+var LL : ListOfList .
+
+eq lastEl(L E) = E .
+
+
+eq lastButOne(L E1 E2) = E1 .
+eq lastButOne(E1 E2) = E1 .
+eq lastButOne(E1) = vid .
+eq lastButOne(nil) = vid .
+
+eq Kth(E L, 1) = E .
+eq Kth(E L, k) = Kth(L, k + (- 1)) .
+eq Kth(E, 1) = E .
+ceq Kth(E, k) = vid if (k > 1) .
+
+eq length(E L) = 1 + length(L) .
+eq length(E) = 1 .
+eq length(nil) = 0 .
+
+eq reverse(E L) = (reverse(L) E) .
+eq reverse(nil E) = E .
+
+
+eq isEqual (E1 L1, E2 L2) =  if (E1 == E2)  then isEqual(L1, L2)
+								else false fi .
+eq isEqual(E1, nil) = false .
+eq isEqual(nil, E1) = false .
+eq isEqual(nil, nil) = true .
+
+eq isPalindrom(L) = isEqual(L, reverse(L)) . 
+
+eq compress(L1 k k L2) = compress(L1 k L2) .
+
+eq headL(E L1) = E .
+eq headL(E) = E .
+eq headLOL(L1) = L1 .
+eq headLOL(L1 ; L2) = L1 .
+eq headLOL(L1 ; LL) = L1 .
+
+eq tailLOL(L1 ; LL) = LL .
+eq pack(E LL) = if (E == headL(headLOL(pack(LL)))) then ((E headLOL(pack(LL))) ; 
+					tailLOL(pack(LL))) 
+				else (E ; pack(LL)) fi .
+eq pack(nil) = vid .
+
+eq compress2(L ; LL) = (length(L) headL(L) ) ; compress2(LL) .
+eq compressType2(LL) = compress2(pack(LL)) .
+
+endfm

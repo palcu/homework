@@ -1,0 +1,49 @@
+fmod List is
+
+  including INT .
+  
+  sort List .
+  subsort Int < List .
+  
+  op nil : -> List .
+  op _,_ : List List -> List
+ [assoc id: nil] .
+  
+  op append : List List -> List
+ .
+  op member : Int List -> Bool .
+  op first : List ~> Int .
+  op last : List ~> Int .
+  op length : List -> Int .
+  op reverse : List -> List .
+  op rev : List List -> List .
+  op insert : Int List -> List .
+  op insertionSort : List -> List .
+
+  vars L1 L2 : List .
+  vars x y z : Int .
+
+  eq append (L1, L2) = L1, L2 .
+  eq first (x, L1) = x .
+  eq last (L1, x) = x .
+  eq length (nil) = 0 .
+  eq length (x, L1) = length(L1) + 1 .
+  eq member (x, (L1, x, L2)) = true . 
+  eq member (x, L1) = false [owise] .
+  
+  eq reverse 
+(L1) = rev(L1, nil) .
+
+  ceq rev (L1, L2) = L2 if L1 == nil .
+  eq rev ((L1, x), L2) = rev(L1, append(L2, x)) [owise] .
+  
+  ceq insert (x, L1) = x, L1 if x <= first(L1) .
+  ceq insert (x, L1) = L1, x if x >= last(L1) .
+  ceq insert (x, (L1, y, z, L2)) = L1, y, x, z, L2 if y <= x and x <= z .
+
+  eq insertionSort(nil) = nil .  
+  ceq insertionSort((L1, x, L2)) = insert(x, insertionSort(L1, L2)) if x >= first(L2) or x <= last(L1) .
+  eq insertionSort((L1, x, L2)) = L1, x, L2 [owise] . 
+
+
+endfm

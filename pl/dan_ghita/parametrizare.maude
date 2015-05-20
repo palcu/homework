@@ -1,0 +1,102 @@
+fth TRIV is
+    sort Elt .
+endfth
+
+view Int from TRIV to INT is
+
+  sort Elt to Int .
+
+endv
+
+
+fmod List{X :: TRIV} is
+
+  sort List{X} .
+
+
+  op nil : -> List{X} .
+  op _,_ : List{X} List{X} -> List{X} [assoc id: nil] .
+  subsort X$Elt < List{X} .
+
+endfm
+
+fmod TEST is
+  
+  including List{Int} .
+ 
+endfm
+
+fth OSET is
+
+  including BOOL .
+  sort OSet .
+  op _<=_ : OSet OSet -> Bool .
+
+endfth
+
+view OSET from TRIV to OSET is
+    
+  sort Elt to OSet .
+
+endv
+
+view OINT from OSET to INT is
+  sort OSet to Int .
+endv
+
+view OSTRING from OSET to STRING is
+  sort OSet to String .
+endv
+
+fmod OLIST{X :: OSET} is
+
+  extending List{OSET}{X} .
+  op insert : X$OSet List{OSET}{X} -> List{OSET}{X} .    
+  
+  vars L1 L2 : List{OSET}{X} .
+  vars A B C : X$OSet . 
+
+  ceq insert (B, (L1, A, C, L2)) = L1, A, B, C, L2 if A <= B and B <= C .
+
+
+endfm
+
+fmod TEST2 is
+
+  including OLIST{OSTRING} .
+
+endfm
+
+fth NODE is
+
+  including BOOL .
+  sort Node .
+  op _<=_ : Node Node -> Bool .
+
+endfth
+
+view NODE from TRIV to NODE is
+
+  sort Elt to Node .
+
+endv
+
+view NINT from NODE to INT is
+
+  sort Node to Int .
+
+endv
+
+
+fmod ARB{X :: NODE} is
+
+
+    op root: ARB -> X$Node .
+    op insert : X$Node ARB -> ARB .
+
+    vars A B : ARB .
+    vars a, b, x : X$Node .
+
+    eq insert(x, A B)
+
+endfm

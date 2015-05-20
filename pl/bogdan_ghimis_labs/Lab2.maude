@@ -1,0 +1,67 @@
+	
+
+    fmod LIST is
+            extending NAT .
+            sort List .
+            subsort Nat < List .
+           
+            op Nil : -> List .
+            op _::_ : Nat List -> List .
+     
+            op len_ : List -> Nat .
+            op isIn : Nat List -> Bool .
+            op _++_ : List List -> List .
+            op rev_ : List -> List .
+            op merge : List List -> List .
+           
+            vars L K : List .
+            vars N M : Nat .
+           
+            eq len (Nil) = 0 .
+            eq len (N :: L) = 1 + len (L) .
+     
+            eq isIn (M, Nil) = false .
+            eq isIn (M, N :: L) = (M == N) or isIn (M, L) .
+     
+            eq L ++ Nil = L .
+            eq Nil ++ L = L .
+            eq (N :: L) ++ K = N :: (L ++ K) .
+     
+            eq rev (Nil) = Nil .   
+            eq rev (N :: L) = rev (L) ++ (N :: Nil) .
+     
+            eq merge (Nil, Nil) = Nil .
+            eq merge (Nil, L) = L .
+            eq merge (L, Nil) = L .
+            eq merge (N :: L, M :: K) = if (N < M) then (N :: (merge (L, (M :: K))))
+     
+    else (M :: (merge ((N :: L), K))) fi .
+           
+           
+           
+           
+    endfm
+     
+    fmod FUNC is
+            including NAT .
+            sort NAT .
+            op fib_ : Nat -> Nat [memo] .
+            op p_ : Nat -> Nat .
+            op Comb : Nat Nat -> Nat [memo] .
+           
+            vars N, M : Nat .
+     
+            eq p (0) = 0 .
+            eq p (s N) = N .
+     
+            eq fib (0) = 0 .
+            eq fib 1 = 1 .
+            eq fib N = fib (p N) + fib (p p N) .
+     
+            eq Comb (M, M) = 1 .
+            eq Comb (M, 0) = 1 .
+            eq Comb (M, N) = Comb (p M, N) + Comb (p M, p N) .     
+           
+     
+    endfm
+

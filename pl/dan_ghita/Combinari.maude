@@ -1,0 +1,16 @@
+fmod Combinari is
+
+  including INT .
+
+  op comb : Int Int -> Int [memo] .
+
+  vars n p : Int .
+
+  eq comb (n, 0) = 1 .
+  eq comb (n, n) = 1 .
+
+
+  eq comb (n, p) = comb ((n - 1), p) + comb ((n - 1), (p - 1)) .
+
+
+endfm

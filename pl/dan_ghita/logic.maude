@@ -1,0 +1,48 @@
+fmod Logic is
+
+  sort Logic .
+  sort Variabila .
+  sort Atom .
+  subsort Atom < Logic .
+  op adevarat : -> Logic .
+  op fals : -> Logic .
+  op _/\_ : Logic Logic -> Logic [assoc comm] .
+  op _\/_ : Logic Logic -> Logic [assoc comm] .
+  op ~_ : Logic -> Logic .
+  op _=> : Logic -> Logic .
+  ops a b c d : -> Atom .
+  
+  
+  vars X Y Z : Logic .
+  
+  eq ~ fals = adevarat .  
+  eq ~ adevarat = fals .
+  eq X /\ adevarat = X .
+  eq X /\ fals = fals .
+  eq X \/ adevarat = adevarat .
+  eq X \/ fals = X . 
+  eq ~ (X \/ Y) = ~ X /\ ~ Y .
+  eq ~ (X /\ Y) = ~ X \/ ~ Y .
+  eq X \/ (Y /\ Z) = (X \/ Y) /\ (X \/ Z) .
+  eq X /\ (Y \/ Z) = (X /\ Y) \/ (X /\ Z) . 
+  eq X \/ ~ X = adevarat .
+  eq X /\ ~ X = fals .
+  eq X /\ X = X .
+  eq X \/ X = X .
+  
+endfm
+
+fmod Logic-Fn is
+  including Logic .
+  including NAT .
+  op numara : Logic -> Nat .
+
+  vars At : Atom .
+  vars A B : Logic .
+  
+  eq numara (~ At) = 1 .
+  eq numara ( At ) = 0 .
+  eq numara (A /\ B) = numara(A) + numara(B) .
+  eq numara (A \/ B) = numara(A) + numara(B) .
+
+endfm

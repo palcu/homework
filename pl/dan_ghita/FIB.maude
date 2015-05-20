@@ -1,0 +1,13 @@
+fmod FIB is
+
+  including NAT .
+  op fib : Nat -> Nat [memo] .
+
+  var x : Nat .
+
+  eq fib (0) = 0 .
+  eq fib (1) = 1 .
+  eq fib ( s(s(x))) = fib (s(x)) + fib (x) .
+    
+
+endfm

@@ -1,0 +1,41 @@
+fmod eval is
+    
+    extending INT .
+    including MAP{Int, Int} .
+    sort Id .
+    sort Instr .
+    subsort Id < Int . 
+
+    ops a b c d : -> Id .
+    op evalExpA : Int Map{Int, Int} -> Int  .
+    op evalExpB : Bool Map{Int, Int} -> Bool  .
+    op _=_ : Id Int -> Instr .
+    op if_then_else_ : Bool Instr Instr -> Instr .
+    op evalInstr : Instr Map{Int, Int} -> Map{Int, Int} .
+
+    var M : Map{Int, Int} .
+    var exp exp1 exp2 : Int .
+    var x : Int .
+    var I J : Instr .
+    var e f : Id .
+    var B : Bool .
+
+    eq evalExpA (e, M) = M[e] . 
+    eq evalExpA (e + exp, M) = M[e] + evalExpA(exp, M) .
+    eq evalExpA (e * exp, M) = M[e] * evalExpA(exp, M) .
+
+    eq evalExpB (exp1 <= exp2, M) = evalExpA(exp1, M) <= evalExpA(exp2, M) .
+
+
+    eq evalInstr(e = exp2, M) = insert(e, evalExpA(exp2, M), (M, e |-> evalExpA(exp2, M))) .
+    eq evalInstr(if B then I else J, M) = if evalExpB(B, M) then evalInstr(I, M) else evalInstr(J, M) fi .
+
+
+
+
+
+endfm
+
+red evalExpA(a * (a + b), (a |-> 3, b |-> 5)) .
+red evalExpB(a * (a + b) <= a, (a |-> 3, b |-> 5)) .
+red evalInstr( if a * b <= a + b then a = b else b = a, (a |-> 3, b |-> 5) ) .

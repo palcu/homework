@@ -1,0 +1,93 @@
+fmod LISTA is
+    including INT .
+    including BOOL .
+    
+    sort Lista .
+    subsort Int < Lista .
+
+    op () : -> Lista .
+    op _::_ : Int Lista -> Lista [assoc id: ()] .
+    op _++_ : Lista Lista -> Lista [assoc] .
+    op last : Lista -> Int .
+    op tail : Lista -> Lista .
+    op take : Int Lista -> Lista .
+    op drop : Int Lista -> Lista .
+    op butlast : Lista -> Int .
+    op kthelem : Lista Int -> Int .
+    op length : Lista -> Int .
+    op reverse : Lista -> Lista .
+    op ispalindrom : Lista -> Bool .
+    op compress : Lista -> Lista .
+    op duplicate : Lista -> Lista .
+    op slice : Lista Int Int -> Lista .
+    op rotate : Lista Int -> Lista .
+    op range : Int Int -> Lista .
+    op lesser : Int Lista -> Lista .
+    op greater : Int Lista -> Lista .
+    op qsort : Lista -> Lista .
+
+    vars X Y : Int .
+    vars XS YS : Lista .
+    
+    eq () ++ XS = XS .
+    eq XS ++ () = XS .
+    eq (X :: XS) ++ YS = X :: (XS ++ YS) .
+
+    eq last (X :: ()) = X .
+    eq last (X :: XS) = last (XS) .
+
+    eq tail (()) = () .
+    eq tail (X :: XS) = XS .
+
+    eq take (0, XS) = () .
+    eq take (Y, X :: XS) = X :: take (Y - 1, XS) .
+    
+    eq drop (0, XS) = XS .
+    eq drop (Y, X :: XS) = drop (Y - 1, XS) .
+
+    eq butlast (X :: Y :: ()) = X .
+    eq butlast (X :: XS) = butlast (XS) .
+
+    eq kthelem (X :: XS, 0) = X .
+    eq kthelem (X :: XS, Y) = kthelem (XS, Y - 1) .
+
+    eq length (()) = 0 .
+    eq length (X :: XS) = 1 + length (XS) .
+
+    eq reverse (()) = () .
+    eq reverse (X :: XS) = reverse (XS) ++ X .
+
+    eq ispalindrom (()) = true .
+    eq ispalindrom (X) = true .
+    eq ispalindrom (X :: XS) = (X == (last(XS))) and (ispalindrom (reverse (drop (1, (reverse (XS)))))) .
+
+    eq compress (()) = () .
+    eq compress (X) = X .
+    eq compress (X :: X :: XS) = compress (X :: XS) .
+    eq compress (X :: Y :: XS) = X :: (compress (Y :: XS)) .
+
+    eq duplicate (()) = () .
+    eq duplicate (X :: XS) = X :: X :: duplicate (XS) .
+
+    eq slice ((), X, Y) = () .
+    eq slice (XS, X, Y) = take ((Y - X), drop (X, XS)) .
+
+    ceq rotate (XS, X) = rotate (XS, length(XS) + X) if (X < 0) .
+    eq rotate (XS, X) = drop (X, XS) ++ take (X, XS) .
+
+    eq range (X, X) = X .
+    eq range (X, Y) = X :: range (X + 1, Y) .
+
+    eq lesser (Y, ()) = () .
+    ceq lesser (Y, X :: XS) = X :: lesser (Y, XS) if (X < Y) .
+    eq lesser (Y, X :: XS) = lesser (Y, XS) .
+
+    eq greater (Y, ()) = () .
+    ceq greater (Y, X :: XS) = X :: greater (Y, XS) if (X > Y) .
+    eq greater (Y, X :: XS) = greater (Y, XS) .
+
+    eq qsort (()) = () .
+    eq qsort (X) = X .
+    eq qsort (X :: XS) = qsort (lesser (X, XS)) ++ X ++ qsort (greater (X, XS)) .
+    
+endfm

@@ -1,0 +1,55 @@
+	
+
+    fmod LIST is
+            extending NAT .
+            sort List .
+            subsort Nat < List .
+           
+            op Nil : -> List .
+            op _++_ : List List -> List [assoc id: Nil] .
+     
+            op first : List ~> Nat .
+            op last : List ~> Nat .
+            op length : List -> Nat .
+            op isIn : Nat List -> Bool .
+            op rev : List -> List .
+            op merge : List List -> List .
+            op insert : Nat List -> List .
+            op insertionSort : List -> List .
+            op bubbleSort : List -> List .
+           
+            vars J L K : List .
+            vars M N O : Nat .
+     
+            ceq insert (N, J ++ M ++ O ++ L) = J ++ M ++ N ++ O ++ L if M <= N and N <= O .
+            ceq insert (N, L) = (N ++ L) if (first (L) >= N) .
+            ceq insert (N, L) = (L ++ N) if (last (L) <= N) .
+             eq insert (N, Nil) = N .
+           
+            eq first (N ++ L) = N .
+            eq last (L ++ N) = N .
+     
+            eq length (Nil) = 0 .
+            eq length (N ++ L) = 1 + length (L) .
+     
+            eq isIn (M, Nil) = false .
+            eq isIn (M, N ++ L) = (M == N) or isIn (M, L) .
+     
+            eq rev (Nil) = Nil .   
+            eq rev (N ++ L) = rev (L) ++ (N ++ Nil) .
+     
+            eq merge (Nil, Nil) = Nil .
+            eq merge (Nil, L) = L .
+            eq merge (L, Nil) = L .
+            eq merge (N ++ L, M ++ K) = if (N < M) then (N ++ (merge (L, (M ++ K)))) else (M ++ (merge ((N ++
+     
+    L), K))) fi .
+           
+            eq insertionSort (Nil) = Nil .
+            eq insertionSort (N ++ L) = insert (N, insertionSort (L)) .
+             
+            eq bubbleSort (Nil) = Nil .
+            ceq bubbleSort (J ++ N ++ M ++ L) = bubbleSort (J ++ M ++ N ++ L) if M < N .
+           
+    endfm
+

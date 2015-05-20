@@ -1,0 +1,25 @@
+fmod INTLIST is
+    including LIST{Int} .
+endfm
+    
+view IntList from TRIV to INTLIST is
+    sort Elt to List{Int} .
+endv
+    
+fmod BKT is
+    including INT .
+    including LIST{Int} .
+    including LIST{IntList} .
+
+    op perm : List{Int} -> List{IntList} .
+    op zeros : Int -> List{Int} .
+    op generatePerms : List{Int} List{Int} .
+
+    vars x n : Int .
+    vars xs : List{Int} .
+
+    eq zeros 0 = nil .
+    eq zeros n = 0 zeros (n - 1) .
+
+    eq perm (xs) = generatePerms (xs, length(xs)) .
+endfm

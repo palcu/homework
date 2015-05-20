@@ -1,0 +1,48 @@
+fth TRIV is
+	sort Elt .
+endfth
+
+fmod List {X :: TRIV} is
+	sort List{X} .
+	op nil : -> List{X} .
+	op __ : List{X} List{X} -> List{X} [assoc id: nil] . 
+	subsort X$Elt < List{X} .
+endfm
+
+view L from TRIV to INT is
+	sort Elt to Int . 
+endv
+	
+fth OSET is
+	including BOOL .
+	sort OSet . 
+	op _<=_ : OSet OSet -> Bool .
+endfth
+
+
+view Bix from TRIV to OSET is sort Elt to OSet . endv 
+
+view Blax from OSET to INT is
+	sort OSet to Int .
+endv
+
+Elt -> Oset 
+X -> Oset
+
+fmod OList {X :: OSET} is
+	extending List{Bix}{X} .
+	op insert : X$OSet List{Bix}{X} -> List{Bix}{X} . 
+	var L1 L2 : List{Bix}{X} .
+	var A B C : X$OSet .
+	ceq insert ( A , L1 B C L2 ) = L1 B A C L2 if B <= A and A <= C . 
+endfm
+
+
+fmod TEST is
+	including OList{Blax}.
+endfm
+
+class List<T>
+
+class Olist<X> : List<Int>
+	{ X elem; }

@@ -1,0 +1,45 @@
+fmod BIT is
+	sort Bit . 
+	op 0 : -> Bit .
+	op 1 : -> Bit . 
+	op _+_ : Bit Bit -> Bit [comm] .
+endfm
+
+view Bit from TRIV to BIT is
+	 sort Elt to Bit . 
+endv 
+
+fmod LIST-BIT is 
+	including LIST{Bit} .
+	subsort Bit < List{Bit} .
+	op shiftR : List{Bit} -> List{Bit} .
+	op shiftL : List{Bit} -> List{Bit} .
+	op incr : List{Bit} -> List{Bit} .
+	op decr : List{Bit} -> List{Bit} .
+	op _+_ : List{Bit} List{Bit} -> List{Bit} [comm] .
+	op _*_ : List{Bit} List{Bit} -> List{Bit} [comm] .
+	
+	vars A, B : List{Bit} .
+	
+	eq shiftR(nil) = nil .
+	eq shiftR(A) = front(A) .
+	eq shiftL(A) = A 0 .
+	eq incr(nil) = 1 .
+	eq incr(A 1) = incr(A) 0 .
+	eq incr(A 0) = A 1 . 
+	eq decr(nil) = nil .
+	eq decr(A 1) = A 0 .
+	eq decr(A 0) = decr(A) 1 .
+	eq A + nil = A .
+	eq nil + A = A .
+	eq (A 0) + (B 0) = (A + B) 0 .
+	eq (A 0) + (B 1) = (A + B) 1 .
+	eq (A 1) + (B 0) = (A + B) 1 .
+	eq (A 1) + (B 1) = incr(A + B) 0 .
+	eq A * 1 = A .
+	eq A * 0 = 0 .
+	eq 0 * A = 0 .
+	eq 1 * A = A .
+	eq A * B = (B * tail(A)) + (shiftL((shiftR(A) * B))) . 
+endfm
+

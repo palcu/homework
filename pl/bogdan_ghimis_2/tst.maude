@@ -1,0 +1,21 @@
+fmod Test is
+
+    including MAP{Int, Int} .
+
+    op factori : Int -> Map{Int, Int} .
+    op getFactori : Int Int Map{Int, Int} -> Map{Int, Int} .
+    op addMap : Int Map{Int, Int} -> Map{Int, Int} .
+    
+    vars n k : Int .
+    vars m : Map{Int, Int} .
+
+    eq factori (n) = getFactori (n, 2, empty) .
+    eq getFactori (1, k, m) = m .
+    eq getFactori (n, k, m) = if (n rem k == 0)
+	then getFactori (n quo k, k, addMap (k, m))
+	else getFactori (n, k + 1, m) fi .
+
+    eq addMap (k, m) = if ($hasMapping (m, k) == true)
+	then insert (k, m[k] + 1, m)
+	else insert (k, 1, m) fi .
+endfm

@@ -1,0 +1,50 @@
+fmod EvalExpr is
+	sort id .
+	subsort id < Int .
+
+	including MAP{Int, Int} .
+	including INT .
+	including BOOL .
+
+
+	ops a b c d : -> id .
+	vars x y : Int .
+	vars t : id .
+	var B : Bool .
+	vars I1 I2 : Instr .
+	sort Instr .
+
+	var h : Map {Int, Int} .
+
+
+	op EvalExpr : Int Map{Int, Int} -> Int .
+	op EvalBool : Bool Map{Int, Int} -> Bool .
+	op _EGAL_ : Int Int -> Bool . 
+	op _:=_ : id Int -> Instr .
+	op if_then_else_ : Bool Instr Instr -> Instr .
+	op while_do_ : Bool Instr -> Instr .
+	op EvalInstr : Instr Map{Int, Int} -> Map{Int, Int} . 
+	op _;_ : Instr Instr -> Instr .
+
+	eq EvalExpr(x + y, h) = EvalExpr(x, h) + EvalExpr(y, h) .
+	eq EvalExpr(x * y, h) = EvalExpr(x, h) * EvalExpr(y, h) .
+	eq EvalExpr(x quo y, h) = EvalExpr(x, h) quo EvalExpr(y, h) .
+	eq EvalExpr(x - y, h) = EvalExpr(x, h) - EvalExpr(y, h) .
+	eq EvalBool(x <= y, h) = EvalExpr(x, h) <= EvalExpr(y, h) .
+	eq EvalBool(x EGAL y, h) = EvalExpr(x, h) == EvalExpr(y, h) . 
+	eq EvalBool(x >= y, h) = EvalExpr(x, h) >= EvalExpr(y, h) .
+	eq EvalBool(x < y, h) = EvalExpr(x, h) < EvalExpr(y, h) .
+	eq EvalBool(x > y, h) = EvalExpr(x, h) > EvalExpr(y, h) .
+	eq EvalInstr(t := x, h) = insert(t, EvalExpr(x, h), h) .
+	eq EvalInstr(if B then I1 else I2, h) = if EvalBool(B, h) then EvalInstr(I1, h)
+											else EvalInstr(I2, h) fi .
+	
+	eq EvalInstr(I1 ; I2, h) =  .
+
+	
+	eq EvalExpr(t, h) = h[t] .
+	eq EvalExpr(y, h) = y [owise] .
+
+
+
+endfm

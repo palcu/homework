@@ -1,0 +1,31 @@
+fmod List is
+
+  including INT .
+
+  sort List .
+
+  op [] : -> List .
+  op _::_ : Int List -> List .
+  op _::_ : List Int -> List .
+  op _::_ : List List -> List .
+
+  op head : [List] -> [Int] .
+  op push : Int List -> List .
+  op pop : List -> List .
+  op length : List -> Int .
+  op concat : List List -> List . 
+  op reverse : List -> List .
+  var x : Int .
+  var L, M : List .  
+
+  
+  eq head (x :: L) = x .
+  eq push (x, L) = x :: L . 
+  eq pop (x :: L) = L .
+  eq length ([]) = 0 .
+  eq length (x :: L) = length (L) + 1 .
+  eq reverse (L :: []) = [] :: L .
+  ceq reverse (x :: L) = (reverse (L) :: x) if (length (L) > -1) .
+
+
+endfm

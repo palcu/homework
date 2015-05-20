@@ -1,0 +1,31 @@
+	
+
+    mod HANOI is
+           
+            including LIST{Int} .
+            subsort Int < List{Int} .
+     
+            sort Conf .
+     
+            var X Y Z : Int .
+            var LX LY LZ : List{Int} .
+     
+            op <_,_,_>  : List{Int} List{Int} List{Int} ->  Conf .
+            rl < X LX, nil, LZ >  =>  < LX, X, LZ >  .
+            rl < X LX, LY, nil >  =>  < LX, LY, X >  .
+     
+            rl < nil, Y LY, LZ >  =>  < Y, LY, LZ >  .
+            rl < LX, Y LY, nil >  =>  < LX, LY, Y >  .
+     
+            rl < nil, LY, Z LZ >  =>  < Z, LY, LZ >  .
+            rl < LX, nil, Z LZ >  =>  < LX, Z, LZ >  .
+     
+            crl < X LX, Y LY, LZ >  =>  < LX, X Y LY, LZ >  if X < Y .
+            crl < X LX, LY, Z LZ >  =>  < LX, LY, X Z LZ >  if X < Z .
+            crl < LX, Y LY, Z LZ >  =>  < LX, LY, Y Z LZ >  if Y < Z .
+     
+            crl < X LX, Y LY, LZ >  =>  < Y X LX, LY, LZ >  if X > Y .
+            crl < X LX, LY, Z LZ >  =>  < Z X LX, LY, LZ >  if X > Z .
+            crl < LX, Y LY, Z LZ >  =>  < LX, Z Y LY, LZ >  if Y > Z .
+    endm
+

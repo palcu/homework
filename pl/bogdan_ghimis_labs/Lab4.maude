@@ -1,0 +1,66 @@
+	
+
+    fth Triv is
+            sort Elt .
+    endfth
+     
+    fmod BIT is
+            sort Bit .
+            op 0 : -> Bit .
+            op 1 : -> Bit .
+    endfm
+     
+    view Bit from TRIV to BIT is
+            sort Elt to Bit .
+    endv
+     
+    fmod BINARY is
+            extending LIST{Bit} .
+            sort Binary .
+            subsort List{Bit} < Binary .
+     
+            op SL : Binary -> Binary .
+            op SR : Binary -> Binary .
+     
+            op inc : Binary -> Binary .
+            op _+_ : Binary Binary -> Binary .
+            op add : Binary Binary Bit -> Binary .
+            op _*_ : Binary Binary -> Binary .
+            op prod : Binary Binary Nat -> Binary .
+            op _-_ : Binary Binary -> Binary .
+     
+            vars X Y : Binary .
+            var N : Nat .
+            var B : Bit .
+     
+            eq SL (0) = 0 .
+            eq SL (X) = X 0 .
+           
+            eq SR (B) = 0 .
+            eq SR (X B) = X .
+     
+            eq inc (nil) = 1 .
+            eq inc (X 1) = inc(X) 0 .
+            eq inc (X 0) = X 1 .
+           
+            eq X + Y = add (X, Y, 0) .
+     
+            eq add (X 1, Y 1, 0) = add (X, Y, 1) 0 .
+            eq add (X 1, Y 1, 1) = add (X, Y, 1) 1 .
+            eq add (X 1, Y 0, 0) = add (X, Y, 0) 1 .
+            eq add (X 1, Y 0, 1) = add (X, Y, 1) 0 .
+     
+            eq add (X 0, Y 1, 0) = add (X, Y, 0) 1 .
+            eq add (X 0, Y 1, 1) = add (X, Y, 1) 0 .
+            eq add (X 0, Y 0, 0) = add (X, Y, 0) 0 .
+            eq add (X 0, Y 0, 1) = add (X, Y, 0) 1 .
+     
+            eq add (X, nil, 0) = X .
+            eq add (X, nil, 1) = inc (X) .
+            eq add (nil, X, 0) = X .
+            eq add (nil, X, 1) = inc (X) .
+     
+            eq X * Y = prod (X, Y, size(Y)) .
+            eq prod (X, Y, n) =
+    endfm
+

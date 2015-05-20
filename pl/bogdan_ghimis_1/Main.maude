@@ -1,0 +1,71 @@
+fmod HELLO is
+    sort Tip .
+endfm
+    
+fmod LISTA is
+    including INT .
+    including BOOL .
+    
+    sort Lista .
+    subsort Int < Lista .
+
+    op () : -> Lista .
+    op _::_ : Int Lista -> Lista [assoc id: ()] .
+    op _++_ : Lista Lista -> Lista [assoc] .
+    op last : Lista -> Int .
+    op tail : Lista -> Lista .
+    op map : (Int -> Int) Lista -> Lista .
+    op take : Int Lista -> Lista .
+    op drop : Int Lista -> Lista .
+    op butlast : Lista -> Int .
+    op kthelem : Lista Int -> Int .
+    op length : Lista -> Int .
+    op reverse : Lista -> Lista .
+    op ispalindrom : Lista -> Bool .
+    op compress : Lista -> Lista .
+    op duplicate : Lista -> Lista .
+
+    vars X Y : Int .
+    vars XS YS : Lista .
+    
+    eq () ++ XS = XS .
+    eq XS ++ () = XS .
+    eq (X :: XS) ++ YS = X :: (XS ++ YS) .
+
+    eq last (X :: ()) = X .
+    eq last (X :: XS) = last (XS) .
+
+    eq tail (()) = () .
+    eq tail (X :: XS) = XS .
+
+    eq take (0, XS) = () .
+    eq take (Y, X :: XS) = X :: take (Y - 1, XS) .
+    
+    eq drop (0, XS) = XS .
+    eq drop (Y, X :: XS) = drop (Y - 1, XS) .
+
+    eq butlast (X :: Y :: ()) = X .
+    eq butlast (X :: XS) = butlast (XS) .
+
+    eq kthelem (X :: XS, 0) = X .
+    eq kthelem (X :: XS, Y) = kthelem (XS, Y - 1) .
+
+    eq length (()) = 0 .
+    eq length (X :: XS) = 1 + length (XS) .
+
+    eq reverse (()) = () .
+    eq reverse (X :: XS) = reverse (XS) ++ X .
+
+    eq ispalindrom (()) = true .
+    eq ispalindrom (X) = true .
+    eq ispalindrom (X :: XS) = (X == (last(XS))) and (ispalindrom (reverse (drop (1, (reverse (XS)))))) .
+
+    eq compress (()) = () .
+    eq compress (X) = X .
+    eq compress (X :: X :: XS) = compress (X :: XS) .
+    eq compress (X :: Y :: XS) = X :: (compress (Y :: XS)) .
+
+    eq duplicate (()) = () .
+    eq duplicate (X :: XS) = X :: X :: duplicate (XS) .
+    
+endfm
