@@ -1,0 +1,62 @@
+fmod palcuie is
+  including LIST{Int} .
+  including BOOL .
+  including INT .
+  including MAP{Int, Int} .
+
+  vars X Y Z A B : Int .
+  vars L1 L2 L : List{Int} .
+  vars M : Map{Int, Int} .
+
+  op lasttwo : List{Int} -> List{Int} .
+  eq lasttwo ( L1 X Y ) = X Y .
+
+  --- o operatie filter care ia ca parametrii o lista de numere intregi si un numar natural nenul
+  --- si produce o lista din fiecare al n lea element
+
+  op headn : List{Int} Int -> List{Int} .
+  op tailn : List{Int} Int -> List{Int} .
+
+  eq headn ( L1 , 0 ) = nil .
+  eq headn ( nil , Y ) = nil .
+  eq headn ( X L1 , Y ) = X headn( L1 , Y + - 1 ) .
+
+  eq tailn ( L1 , 0 ) = L1 .
+  eq tailn ( nil , Y ) = nil .
+  eq tailn ( X L1 , Y ) = tailn ( L1 , Y + - 1 ) .
+
+  op elementat : List{Int} Int -> Int .
+  eq elementat ( nil , Y ) = nil .
+  eq elementat ( X L1, 0 ) = X .
+  eq elementat ( X L1, Y ) = elementat ( L1, Y + - 1 ) .
+
+  op reverse : List{Int} -> List{Int} .
+  eq reverse ( nil ) = nil .
+  eq reverse ( X L1 ) = reverse(L1) X .
+
+  op decimeaza : List{Int} Int -> List{Int} .
+  op decimeazaI1 : List{Int} List{Int} Int -> List{Int} .
+
+  eq decimeaza ( L , X ) = decimeazaI1( L , nil , X ) .
+  eq decimeazaI1 ( nil, L , X ) = reverse ( L ) .
+  eq decimeazaI1 ( L1 , L2 , X ) = decimeazaI1 ( tailn(L1 , X) , elementat ( L1 , X + - 1 ) L2 , X ) .
+  --- red decimeaza ( 1 2 3 4 5 6 7 8 9 , 3 ) .
+
+  --- dat fiind cate zerouri are n factorial
+  op intToList : Int -> List{Int} .
+  op intToListI1 : Int List{Int} -> List{Int} .
+  eq intToList ( X ) = intToListI1 ( X, nil ) .
+  eq intToListI1 ( 0 , L1 ) = L1 .
+  eq intToListI1 ( X , L1 ) = intToListI1 ( X quo 10, L1 (X rem 10) ) .
+
+  op zerouri : Int -> Int .
+  op zerouriI1 : Int Int -> Int .
+  op zerouriI2 : List{Int} Int -> Int .
+  eq zerouri ( 0 ) = 0 .
+  eq zerouri ( X ) = zerouriI1 ( X , 1 ) .
+  eq zerouriI1 ( 1 , Y ) = zerouriI2 ( intToList( Y ) , 0 ) .
+  eq zerouriI1 ( X , Y ) = zerouriI1 (  X + - 1 , Y * X ) .
+  eq zerouriI2 ( nil , X ) = X .
+  eq zerouriI2 ( 0 L , X ) = zerouriI2 ( L , X + 1 ).
+  eq zerouriI2 ( L , X ) = X .
+endfm
