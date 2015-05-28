@@ -21,8 +21,8 @@ var lista2 = document.getElementById('lista2')
 
 for (var i in lis) {
   lis[i].onclick = function(e) {
-    myNode = e.target
-    parent = myNode.parentNode
+    var myNode = e.target
+    var parent = myNode.parentNode
     parent.removeChild(myNode)
     if (parent == lista1) {
       lista2.appendChild(myNode)
