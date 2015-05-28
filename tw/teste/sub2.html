@@ -1,0 +1,34 @@
+<html>
+<head>
+</head>
+<body>
+<div id="main">
+</div>
+</body>
+<script>
+
+var main = document.getElementById('main')
+var last = main
+console.log(main)
+for (var i=20; i>=1; i--) {
+  var div = document.createElement('div')
+  div.style.width = 20 * i
+  div.style.height = 20 * i
+  div.id = 'div-' + i
+
+  // doar pentru debug in browser
+  var colors = ['red', 'blue', 'green', 'yellow', 'cyan', 'magenta']
+  div.style.backgroundColor = colors[i % colors.length]
+
+  div.onclick = function(event) {
+    // grija ca e this, nu event
+    // si ca sa fie ca in subiect, alert nu console.log
+    console.log(this.id)
+  }
+
+  last.appendChild(div)
+  last = div
+}
+
+</script>
+</html>
