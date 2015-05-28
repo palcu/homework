@@ -1,0 +1,35 @@
+<html>
+<head>
+</head>
+<body>
+  <ol id="lista1">
+    <li>miau</li>
+    <li>chit</li>
+    <li>ham</li>
+  </ol>
+  <ol id="lista2">
+    <li>muu</li>
+    <li>cip</li>
+    <li>bzzz</li>
+    <li>gugu</li>
+  </ol>
+</body>
+<script>
+var lis = document.getElementsByTagName('li')
+var lista1 = document.getElementById('lista1')
+var lista2 = document.getElementById('lista2')
+
+for (var i in lis) {
+  lis[i].onclick = function(e) {
+    myNode = e.target
+    parent = myNode.parentNode
+    parent.removeChild(myNode)
+    if (parent == lista1) {
+      lista2.appendChild(myNode)
+    } else {
+      lista1.appendChild(myNode)
+    }
+  }
+}
+</script>
+</html>
