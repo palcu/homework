@@ -1,0 +1,32 @@
+<html>
+<head>
+</head>
+<body>
+<a href="http://fmi.unibuc.ro/">Bla</a>
+</body>
+<script>
+//variabila globala
+x = 1
+function f() {
+  console.log('info' + x)
+  x++
+}
+
+var elem = document.getElementsByTagName('a')[0]
+elem.onclick = function(event) {
+  // vrea sa te prinda la faza asta, ca by default vei merge pe site-ul ala,
+  // si nu se executa codul tau. De-aia trebuie sa scrii linia asta dubioasa.
+  event.preventDefault()
+
+  // var zeceSecunde = 1000 * 10 //o mie milisecunde ori zeze
+  var oSecunda = 1000
+  // var zeceMinute = 1000 * 60 * 10
+  var cinciSecunde = 1000 * 5
+
+  intervalId = setInterval(f, oSecunda)
+  setTimeout(function() {
+    clearInterval(intervalId)
+  }, cinciSecunde)
+}
+</script>
+</html>
