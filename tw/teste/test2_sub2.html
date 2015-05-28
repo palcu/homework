@@ -1,0 +1,36 @@
+<html>
+<head>
+</head>
+<body>
+  <ol id="lista1">
+    <li>miau</li>
+    <li>chit</li>
+    <li>ham</li>
+  </ol>
+  <ol id="lista2">
+    <li>muu</li>
+    <li>cip</li>
+    <li>bzzz</li>
+    <li>gugu</li>
+  </ol>
+</body>
+<script>
+var lista1 = document.getElementById('lista1')
+var lista2 = document.getElementById('lista2')
+
+document.onkeydown = function(event) {
+  // 49 e codul pentru tasta 1... don't ask de unde trebuie sa stiti asta
+  var tasta = event.keyCode - 48
+  if (lista1.children.length < tasta || lista2.children.length < tasta) {
+    console.log('prea putine')
+  } else {
+    var nod1 = lista1.children[tasta-1]
+    var nod2 = lista2.children[tasta-1]
+    var aux
+    aux = nod1.textContent
+    nod1.textContent = nod2.textContent
+    nod2.textContent = aux
+  }
+}
+</script>
+</html>
