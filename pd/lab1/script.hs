@@ -9,3 +9,6 @@ let intre list left right = [ x | x <-list, x>=left, x<=right ]
 
 let pozitive list = length [ x | x <-list, x>=0 ]
 
+# ai o lista de preturi, si vrei sa alegi preturile care scazute cu 10% sunt mai mici cu 199
+let reducere lista k = sum [ x | x <- lista, x * 90 / 100 < k ] 
+
