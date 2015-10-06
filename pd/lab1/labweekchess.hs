@@ -11,40 +11,45 @@ import Test.QuickCheck
 -- Exercise 9:
 
 pic1 :: Picture
-pic1 = undefined
+pic1 = ((knight `beside` (invert knight)) `above` ((invert knight) `beside` knight))
 
 pic2 :: Picture
-pic2 = undefined
+pic2 = ((knight `beside` (invert knight)) `above` (flipV ((knight) `beside` (invert knight))))
 
 
 -- Exercise 10:
 -- a)
 
 emptyRow :: Picture
-emptyRow = undefined
+emptyRow = (repeatH 4 (whiteSquare `beside` blackSquare))
 
 -- b)
 
 otherEmptyRow :: Picture
-otherEmptyRow = undefined
+otherEmptyRow = (repeatH 4 (blackSquare `beside` whiteSquare))
 
 -- c)
 
 middleBoard :: Picture
-middleBoard = undefined
+middleBoard = (repeatV 2 (emptyRow `above` otherEmptyRow))
 
 -- d)
 
 whiteRow :: Picture
-whiteRow = undefined
+pieceRow :: Picture
+pieceRow = (rook `beside` knight `beside` bishop `beside` queen `beside` king `beside` bishop `beside` knight `beside` rook)
+whiteRow = (pieceRow `over` otherEmptyRow)
 
 blackRow :: Picture
-blackRow = undefined
+blackRow = ((invert pieceRow) `over` emptyRow)
 
 -- e)
 
 populatedBoard :: Picture
-populatedBoard = undefined
+pawnRow = (repeatH 8 pawn)
+whitePawnRow = (pawnRow `over` emptyRow)
+blackPawnRow = ((invert pawnRow) `over` otherEmptyRow)
+populatedBoard = (blackRow `above` blackPawnRow `above` middleBoard `above` whitePawnRow `above` whiteRow)
 
 
 
@@ -57,7 +62,7 @@ twoBeside x = beside x (invert x)
 -- Exercise 11:
 
 twoAbove :: Picture -> Picture
-twoAbove x = undefined
+twoAbove x = above x (invert x)
 
 fourPictures :: Picture -> Picture
-fourPictures x = undefined
+fourPictures x = twoBeside (twoAbove x)

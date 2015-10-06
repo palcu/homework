@@ -14,27 +14,27 @@ import Test.QuickCheck
 -- Exercise 3:
 
 double :: Int -> Int
-    double x = x + x
+double x = x + x
 
 square :: Int -> Int
-square x = undefined
+square x = x * x
 
 -- Exercise 4:
 
 isTriple :: Int -> Int -> Int -> Bool
-isTriple a b c = undefined
+isTriple a b c = a*a + b*b == c*c
 
 
 -- Exercise 5:
 
 leg1 :: Int -> Int -> Int
-leg1 x y = undefined
+leg1 x y = x*x - y*y
 
 leg2 :: Int -> Int -> Int
-leg2 x y = undefined
+leg2 x y = 2*y*x
 
 hyp :: Int -> Int -> Int
-hyp x y = undefined
+hyp x y = x*x + y*y
 
 
 -- Exercise 6:

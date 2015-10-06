@@ -5,13 +5,13 @@ xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 values="-1 0  0  0  0  0 -1  0  0  0  0  0 -1  0  0  1  1  1  0  0" />
 </filter>
 
-  <image x="0" y="0" width="150" height="200" xlink:href="images/blk_horse_head.jpg"/>
+  <image x="0" y="0" width="50" height="50" xlink:href="images/pawn.png"/>
 
-  <image x="150" y="0" width="150" height="200" xlink:href="images/blk_horse_head.jpg" transform="translate(450,0) scale(-1,1)" />
+  <image x="0" y="50" width="50" height="50" xlink:href="images/pawn.png" filter="url(#negative)"/>
 
-  <image x="0" y="200" width="150" height="200" xlink:href="images/blk_horse_head.jpg" transform="translate(150,0) scale(-1,1)" />
+  <image x="50" y="0" width="50" height="50" xlink:href="images/pawn.png" filter="url(#negative)"/>
 
-  <image x="150" y="200" width="150" height="200" xlink:href="images/blk_horse_head.jpg"/>
+  <image x="50" y="50" width="50" height="50" xlink:href="images/pawn.png"/>
 
 </svg>
 
