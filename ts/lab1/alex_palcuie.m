@@ -68,13 +68,23 @@ function f6(v, m)
     v = v(~ismember(v, v2))
 end
 
+function [media, dispersia] = f7(X, P)
+    media = P * X
+    % TODO: dispersia
+    dispersia = 0
+end
+
 function alex_palcuie()
     #f1()
     #f2([0 0], [0 5])
     #f3(3, 6)
     #f4()
 	#f5(5)
-    f6([3 2 1 6 7 9 2 5], 3)
+    #f6([3 2 1 6 7 9 2 5], 3)
+    X = magic(3)
+    P = [1:3]
+
+    f7()
 end
 
 alex_palcuie()
