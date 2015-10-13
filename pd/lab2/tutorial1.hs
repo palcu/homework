@@ -13,15 +13,17 @@ import Test.QuickCheck
 
 -- List-comprehension version
 halveEvens :: [Int] -> [Int]
-halveEvens xs = undefined
+halveEvens xs = [x `div` 2 | x <- xs, x `mod` 2 == 0]
 
 -- Recursive version
 halveEvensRec :: [Int] -> [Int]
-halveEvensRec = undefined
+halveEvensRec [] = []
+halveEvensRec (x:xs) | even x = x `div` 2 : halveEvensRec xs
+                     | otherwise = halveEvensRec xs
 
 -- Mutual test
 prop_halveEvens :: [Int] -> Bool
-prop_halveEvens = undefined
+prop_halveEvens xs = (halveEvens xs == halveEvensRec xs)
 
 
 
@@ -29,15 +31,17 @@ prop_halveEvens = undefined
 
 -- List-comprehension version
 inRange :: Int -> Int -> [Int] -> [Int]
-inRange lo hi xs = undefined
+inRange lo hi xs = [x | x <- xs, x>=lo, x<=hi]
 
 -- Recursive version
 inRangeRec :: Int -> Int -> [Int] -> [Int]
-inRangeRec = undefined
+inRangeRec lo hi [] = []
+inRangeRec lo hi (x:xs) | lo <= x && x <= hi = x : inRangeRec lo hi xs
+                        | otherwise = inRangeRec lo hi xs
 
 -- Mutual test
 prop_inRange :: Int -> Int -> [Int] -> Bool
-prop_inRange = undefined
+prop_inRange lo hi xs = (inRange lo hi xs == inRangeRec lo hi xs)
 
 
 
@@ -45,15 +49,17 @@ prop_inRange = undefined
 
 -- List-comprehension version
 countPositives :: [Int] -> Int
-countPositives = undefined
+countPositives xs = length [x | x <- xs, x>0]
 
 -- Recursive version
 countPositivesRec :: [Int] -> Int
-countPositivesRec = undefined
+countPositivesRec [] = 0
+countPositivesRec (x:xs) | x > 0 = 1 + countPositivesRec xs
+                         | otherwise = countPositivesRec xs
 
 -- Mutual test
 prop_countPositives :: [Int] -> Bool
-prop_countPositives = undefined
+prop_countPositives xs = (countPositives xs == countPositivesRec xs)
 
 
 
@@ -61,19 +67,21 @@ prop_countPositives = undefined
 
 -- Helper function
 discount :: Int -> Int
-discount = undefined
+discount x = x - round((fromIntegral x) * 1.0 / 10.00)
 
 -- List-comprehension version
 pennypincher :: [Int] -> Int
-pennypincher = undefined
+pennypincher xs = sum [y | x <- xs, let y = discount x, y <= 19900]
 
 -- Recursive version
 pennypincherRec :: [Int] -> Int
-pennypincherRec = undefined
+pennypincherRec [] = 0
+pennypincherRec (x:xs) | discount x <= 19900 = discount x + pennypincherRec xs
+                       | otherwise = pennypincherRec xs
 
 -- Mutual test
 prop_pennypincher :: [Int] -> Bool
-prop_pennypincher = undefined
+prop_pennypincher xs = pennypincher xs == pennypincherRec xs
 
 
 
@@ -81,15 +89,17 @@ prop_pennypincher = undefined
 
 -- List-comprehension version
 multDigits :: String -> Int
-multDigits = undefined
+multDigits xs = product [digitToInt x | x <- xs, isDigit x]
 
 -- Recursive version
 multDigitsRec :: String -> Int
-multDigitsRec = undefined
+multDigitsRec [] = 1
+multDigitsRec (x:xs) | isDigit x = digitToInt x * multDigitsRec xs
+                     | otherwise = multDigitsRec xs
 
 -- Mutual test
 prop_multDigits :: String -> Bool
-prop_multDigits = undefined
+prop_multDigits xs = multDigits xs == multDigitsRec xs
 
 
 
@@ -97,31 +107,43 @@ prop_multDigits = undefined
 
 -- List-comprehension version
 capitalise :: String -> String
-capitalise = undefined
+capitalise "" = ""
+capitalise xs = toUpper(head xs) : [toLower x | x <- tail xs]
 
 -- Recursive version
 capitaliseRec :: String -> String
-capitaliseRec = undefined
+capitaliseRec "" = ""
+capitaliseRec (x:xs) = toUpper x : capitaliseRec2 xs
+capitaliseRec2 [] = []
+capitaliseRec2 (x:xs) = toLower x : capitaliseRec2 xs
 
 -- Mutual test
 prop_capitalise :: String -> Bool
-prop_capitalise = undefined
+prop_capitalise xs = capitalise xs == capitaliseRec xs
 
 
 
 -- 7. title
 
 -- List-comprehension version
+toLowerWord :: String -> String
+toLowerWord xs = [toLower x | x <- xs]
+
 title :: [String] -> [String]
-title = undefined
+title [] = []
+title (x:xs) = capitalise x : [if length x <= 3 then toLowerWord x else capitalise x | x <- xs]
 
 -- Recursive version
 titleRec :: [String] -> [String]
-titleRec = undefined
+titleRec [] = []
+titleRec (x:xs) = capitalise x : titleRec2 xs
+titleRec2 [] = []
+titleRec2 (x:xs) | length x <= 3 = toLowerWord x : titleRec2 xs
+                 | otherwise = capitalise x : titleRec2 xs
 
 -- mutual test
 prop_title :: [String] -> Bool
-prop_title = undefined
+prop_title xs = titleRec xs == title xs
 
 
 
@@ -132,15 +154,23 @@ prop_title = undefined
 
 -- List-comprehension version
 crosswordFind :: Char -> Int -> Int -> [String] -> [String]
-crosswordFind = undefined
+crosswordFind letter inPosition len words = [x | x<-words, length x == len, 
+                                                 inPosition < length x,
+                                                 inPosition >= 0,
+                                                 x !! inPosition == letter]
 
 -- Recursive version
 crosswordFindRec :: Char -> Int -> Int -> [String] -> [String]
-crosswordFindRec = undefined
+crosswordFindRec letter inPosition len [] = []
+crosswordFindRec letter inPosition len (x:xs)
+    | length x == len && inPosition < length x && inPosition >= 0 && x !! inPosition == letter = 
+            x : crosswordFindRec letter inPosition len xs
+    | otherwise = crosswordFindRec letter inPosition len xs
 
 -- Mutual test
 prop_crosswordFind :: Char -> Int -> Int -> [String] -> Bool
-prop_crosswordFind = undefined 
+prop_crosswordFind letter inPosition len words = 
+    crosswordFind letter inPosition len words == crosswordFindRec letter inPosition len words
 
 
 
