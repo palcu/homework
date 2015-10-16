@@ -179,28 +179,36 @@ prop_crosswordFind letter inPosition len words =
 -- List-comprehension version
 
 search :: String -> Char -> [Int]
-search = undefined
+search s c = [y | (x, y) <- zip s [0..], x == c]
 
 -- Recursive version
 searchRec :: String -> Char -> [Int]
-searchRec = undefined
+searchRec cs t = searchRec2 cs t 0
+searchRec2 :: String -> Char -> Int -> [Int]
+searchRec2 [] t u = []
+searchRec2 (c:cs) t u | c == t = u : searchRec2 cs t (u + 1)
+                      | otherwise = searchRec2 cs t (u + 1)
 
 -- Mutual test
 prop_search :: String -> Char -> Bool
-prop_search = undefined
+prop_search cs c = (searchRec cs c == search cs c)
 
 
 -- 10. contains
 
 -- List-comprehension version
 contains :: String -> String -> Bool
-contains = undefined
+contains text s = or [(s `isPrefixOf` (drop x text)) | x <- [0..length(text)]]
 
 -- Recursive version
 containsRec :: String -> String -> Bool
-containsRec = undefined
+containsRec text s = containsRec2 text s
+containsRec2 text "" = True
+containsRec2 "" s = False
+containsRec2 (c:text) s | s `isPrefixOf` (c:text) = True 
+                        | otherwise = containsRec2 text s
 
 -- Mutual test
 prop_contains :: String -> String -> Bool
-prop_contains = undefined
+prop_contains text s = contains text s == containsRec text s
 
