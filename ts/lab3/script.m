@@ -5,7 +5,7 @@ end
 a = -2
 b = 2
 u = 1
-v = 10
+v = 1000
 
 x = my_rand(a, b, u, v);
 [N, X] = hist(x, 20)
