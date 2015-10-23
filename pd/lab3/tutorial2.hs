@@ -93,7 +93,7 @@ candidatesList2 str = [(x, y) | x <- [0..25],
 
 -- 13.
 splitEachFive :: String -> [String]
-splitEachFive s | length s < 5 = [(s ++ replicate (5 - length s) 'X')]
+splitEachFive s | length s <= 5 = [(s ++ replicate (5 - length s) 'X')]
                 | let y = splitAt 5 s,
                   otherwise = ((fst y) : (splitEachFive (snd y)))
 
@@ -106,9 +106,14 @@ encrypt :: Int -> String -> String
 encrypt x s = concat(transpose(splitEachFive(encipherStr x s)))
 
 -- 16.
+splitEachX :: String -> Int -> [String]
+splitEachX s x | length s == 0 = []
+               | let y = splitAt x s,
+                 otherwise = ((fst y) : (splitEachX (snd y) x))
+
 decrypt :: Int -> String -> String
--- nu merge
-decrypt x s = decipherStr x concat(transpose(splitEachFive(s)))
+-- decrypt x str = decipherStr x (concat(splitEachFive str))
+decrypt x str = decipherStr x (concat(transpose(splitEachX str ((length str) `div` 5))))
 
 -- Challenge (Optional)
 
