@@ -1,17 +1,36 @@
-function a = invert_exp(lambda, x)
-    a = double(1) - double(1)/x;
+pkg load all
+hold on
+
+function a = F(x)
+    if x == 1
+        a = 0;
+    else
+        a = 1 / (1-x);
+    end
 end
 
-function A = gen_selection(lambda, n)
-    A = rand(1, n);
-    A = arrayfun(@invert_exp, lambda, A);
+function a = f(x)
+    x_patrat = x * x;
+    if x == 0
+        a = 1;
+    else
+        a = 1 / x_patrat;
+    end
 end
 
-lambda = 1;
+function [A, B] = gen_selection(n)
+    A = B = rand(1, n);
+    A = arrayfun(@F, A);
+    B = arrayfun(@f, B);
+end
+
 n = 1000;
 
-x = gen_selection(lambda, n);
+[x, y] = gen_selection(n);
 [N, X] = hist(x, 1000);
-M = N;
+M = N / (double(n) * (X(2) - X(1)));
 bar(X, M, 1, 'r');
-sum(M);
+
+abscise = 0 : 1 : max(X);
+Y = arrayfun(@f, abscise);
+plot(abscise, Y);
