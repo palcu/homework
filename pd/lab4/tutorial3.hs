@@ -11,50 +11,52 @@ import Test.QuickCheck
 -- 1. Map
 -- a. (4 simboluri)
 uppers :: String -> String
-uppers = undefined
+uppers = map toUpper
 
 -- b. (7 simboluri)
 doubles :: [Int] -> [Int]
-doubles = undefined
+doubles = map (* 2)
+
 
 -- c. (11 simboluri)
 penceToPounds :: [Int] -> [Float]
-penceToPounds = undefined
+-- penceToPounds = map (\x -> fromIntegral x / 100)
+penceToPounds = map (/ 100) . map fromIntegral
 
 -- d. (11 simboluri)
 uppers' :: String -> String
-uppers' = undefined
+uppers' xs = [toUpper x | x <- xs]
 
 -- (8 simboluri)
 prop_uppers :: String -> Bool
-prop_uppers = undefined
+prop_uppers xs = uppers xs == uppers' xs
 
 
 
 -- 2. Filter
 -- a. (4 simboluri)
 alphas :: String -> String
-alphas = undefined
+alphas = filter isAlpha
 
 -- b. (8 simboluri)
 rmChar ::  Char -> String -> String
-rmChar = undefined
+rmChar c = filter (/= c)
 
 -- c. (8 simboluri)
 above :: Int -> [Int] -> [Int]
-above = undefined
+above x = filter (> x)
 
 -- d. (15 simboluri)
 unequals :: [(Int,Int)] -> [(Int,Int)]
-unequals = undefined
+unequals = filter (\x -> (fst x) == (snd x))
 
 -- e. (15 simboluri)
 rmCharComp :: Char -> String -> String
-rmCharComp = undefined
+rmCharComp c xs = [x | x<-xs, x/=c]
 
 -- (11 simboluri)
 prop_rmChar :: Char -> String -> Bool
-prop_rmChar = undefined
+prop_rmChar c xs = rmChar c xs == rmCharComp c xs
 
 
 
@@ -65,7 +67,7 @@ upperChars s = [toUpper c | c <- s, isAlpha c]
 
 -- (7 simboluri)
 upperChars' :: String -> String
-upperChars' = undefined
+upperChars' = map toUpper . filter isAlpha
 
 prop_upperChars :: String -> Bool
 prop_upperChars s = upperChars s == upperChars' s
@@ -76,7 +78,7 @@ largeDoubles xs = [2 * x | x <- xs, x > 3]
 
 -- (13 simboluri)
 largeDoubles' :: [Int] -> [Int]
-largeDoubles' = undefined
+largeDoubles' = map (2*) . filter (>3)
 
 prop_largeDoubles :: [Int] -> Bool
 prop_largeDoubles xs = largeDoubles xs == largeDoubles' xs 
@@ -87,7 +89,7 @@ reverseEven strs = [reverse s | s <- strs, even (length s)]
 
 -- (11 simboluri)
 reverseEven' :: [String] -> [String]
-reverseEven' = undefined
+reverseEven' = map reverse . filter (even . length)
 
 prop_reverseEven :: [String] -> Bool
 prop_reverseEven strs = reverseEven strs == reverseEven' strs
@@ -102,57 +104,58 @@ productRec (x:xs) = x * productRec xs
 
 -- (7 simboluri)
 productFold :: [Int] -> Int
-productFold = undefined
+productFold = foldr (*) 1
 
 prop_product :: [Int] -> Bool
 prop_product xs = productRec xs == productFold xs
 
 -- b.  (16 simboluri)
 andRec :: [Bool] -> Bool
-andRec = undefined
+andRec [] = True
+andRec (x:xs) = x && andRec(xs)
 
 -- (7 simboluri)
 andFold :: [Bool] -> Bool
-andFold = undefined
+andFold = foldr (&&) True
 
 prop_and :: [Bool] -> Bool
 prop_and xs = andRec xs == andFold xs 
 
 -- c.  (17 simboluri)
 concatRec :: [[a]] -> [a]
-concatRec = undefined
+concatRec [] = []
+concatRec (x:xs) = x ++ concatRec(xs)
 
 -- (8 simboluri)
 concatFold :: [[a]] -> [a]
-concatFold = undefined
+concatFold = foldr (++) []
 
 prop_concat :: [String] -> Bool
 prop_concat strs = concatRec strs == concatFold strs
 
 -- d.  (17 simboluri)
 rmCharsRec :: String -> String -> String
-rmCharsRec = undefined
+rmCharsRec [] str = str
+rmCharsRec (x:xs) str = rmCharsRec xs (rmChar x str)
 
 -- (6 simboluri)
 rmCharsFold :: String -> String -> String
-rmCharsFold = undefined
+rmCharsFold = flip $ foldr rmChar
 
 prop_rmChars :: String -> String -> Bool
 prop_rmChars chars str = rmCharsRec chars str == rmCharsFold chars str
 
 
-
 type Matrix = [[Int]]
-
 
 -- 5
 -- a. (18 simboluri)
 uniform :: [Int] -> Bool
-uniform = undefined
+uniform xs = all (== head xs) xs
 
 -- b. (23 simboluri)
 valid :: Matrix -> Bool
-valid = undefined
+valid xs = not (null xs ||  null (head xs)) && (uniform $ map length xs)
 
 -- 6.
 
