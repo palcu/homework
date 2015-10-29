@@ -24,4 +24,4 @@ for i = 1:N
     Y(i) = simVarDiscreta(X, p);
 end
 
-hist(Y)
+hist(Y);
