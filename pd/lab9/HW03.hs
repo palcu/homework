@@ -34,15 +34,29 @@ type State = String -> Int
 -- Exercise 1 -----------------------------------------
 
 extend :: State -> String -> Int -> State
-extend = undefined
+extend st name val = \x -> if x == name then val else st x
 
 empty :: State
-empty = undefined
+empty x = 0
 
 -- Exercise 2 -----------------------------------------
 
 evalE :: State -> Expression -> Int
-evalE = undefined
+evalE st (Val x) = x
+evalE st (Var s) = st s
+evalE st (Op e1 sign e2) = evalMic (evalE st e1) sign (evalE st e2)
+
+evalMic :: Int -> Bop -> Int -> Int
+evalMic a Plus b = a + b
+evalMic a Minus b = a - b
+evalMic a Eql b = fromEnum(a == b)
+evalMic a Times b = a * b
+evalMic a Divide b = a `div` b
+evalMic a Gt b = fromEnum(a > b)
+evalMic a Ge b = fromEnum(a >= b)
+evalMic a Lt b = fromEnum(a < b)
+evalMic a Le b = fromEnum(a <= b)
+
 
 -- Exercise 3 -----------------------------------------
 
@@ -54,7 +68,13 @@ data DietStatement = DAssign String Expression
                      deriving (Show, Eq)
 
 desugar :: Statement -> DietStatement
-desugar = undefined
+desugar (Assign x expr) = (DAssign x expr)
+desugar (If x expr1 expr2) = (DIf x (desugar expr1) (desugar expr2))
+desugar (While expr s) = (DWhile expr (desugar s))
+desugar (Sequence e1 e2) = (DSequence (desugar e1) (desugar e2))
+-- desugar (For s1 e s2 s3) = (DSequence (desugar s1) DWhile(e DSequence((desugar s3) (desugar s2))))
+-- desugar (For s1 e s2 s3) = Sequence(s1 s2)
+
 
 
 -- Exercise 4 -----------------------------------------
