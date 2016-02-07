@@ -1,0 +1,45 @@
+
+doctor STORAGE 3
+
+; in salon
+salon ADVANCE 70,15
+PRIORITY 3
+QUEUE coada_doctor
+ENTER doctor,1
+DEPART coada_doctor
+ADVANCE 120,15
+LEAVE doctor,1
+TERMINATE 0
+
+
+;mare
+GENERATE 250,50,,50,4
+QUEUE coada_doctor
+ENTER doctor,1
+DEPART coada_doctor
+ADVANCE 120,15
+LEAVE doctor,1
+TRANSFER 0.5,,salon
+TERMINATE 0
+
+;medie
+GENERATE 150,30,,,1
+QUEUE coada_doctor
+ENTER doctor,1
+DEPART coada_doctor
+ADVANCE 30,15
+LEAVE doctor,1
+TERMINATE 0
+
+;mica
+GENERATE 10,5,,,0
+QUEUE coada_doctor
+ENTER doctor,1
+DEPART coada_doctor
+ADVANCE 15,5
+LEAVE doctor,1
+TERMINATE 0
+
+;tick
+GENERATE 1
+TERMINATE 1
