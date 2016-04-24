@@ -1,4 +1,5 @@
 from common import f, INTERVALS, MAX_ITERATIONS, EPSILON, same_sign
+from decimal import *
 
 def get_root(interval):
     a, b = interval
@@ -18,5 +19,4 @@ def correct_interval(interval):
 
 for interval in INTERVALS:
     if correct_interval(interval):
-        print(get_root(interval))
-
+        print(Decimal(get_root(interval)))
