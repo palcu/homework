@@ -1,5 +1,4 @@
 def other_stuff():
-	ugly = 12.3e-5
 	escaped_string = 'escaped \
 string'
 	escaped = 'miau \' miau'
