@@ -1,5 +1,5 @@
 def other_stuff():
-	sc = 2e-3
+	sc = 2e3
 	hexa = 0xf
 	escaped_string = 'escaped \
 string'
