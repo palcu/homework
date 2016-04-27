@@ -51,3 +51,6 @@ def is_character_can_be_followed_by_equal(c):
 
 def is_equal(c):
     return c == '='
+
+def is_e(c):
+    return c == 'e'

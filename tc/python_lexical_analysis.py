@@ -1,4 +1,5 @@
 def other_stuff():
+	sc = 2e-3
 	escaped_string = 'escaped \
 string'
 	escaped = 'miau \' miau'
@@ -74,6 +75,7 @@ class Dfa():
 		'CHARACTER_ESCAPED': 14,
 		'CHARACTER_CAN_BE_FOLLOWED_BY_EQUAL': 15,
 		'GROUP_CHARACTER': 16,
+		'EXPONENT': 17,
 		'END': 999,
 	}
 	NONPRODUCTING_STATES = [
@@ -115,6 +117,7 @@ class Dfa():
 			self.STATES['NUMBER']: [
 				[is_digit, self.STATES['NUMBER']],
 				[is_point, self.STATES['FLOAT_NUMBER']],
+				[is_e, self.STATES['EXPONENT']],
 				[anything, self.STATES['END']],
 			],
 			self.STATES['FLOAT_NUMBER']: [
@@ -150,6 +153,11 @@ class Dfa():
 				[anything, self.STATES['END']],
 			],
 			self.STATES['GROUP_CHARACTER']: [
+				[anything, self.STATES['END']],
+			],
+			self.STATES['EXPONENT']: [
+				[is_negative_sign, self.STATES['NEGATIVE_SIGN']],
+				[is_digit, self.STATES['NUMBER']],
 				[anything, self.STATES['END']],
 			],
 		}
