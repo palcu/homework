@@ -11,8 +11,6 @@ string'
 	y = -3.14
 	x += 1
 
-# suporta doar indentare de taburi
-# nu suporta stringuri cu ""
 
 from helpers import *
 from time import sleep
