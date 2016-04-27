@@ -54,3 +54,6 @@ def is_equal(c):
 
 def is_e(c):
     return c == 'e'
+
+def is_hexa_char(c):
+    return is_digit(c) or 'a' <= c <= 'f'

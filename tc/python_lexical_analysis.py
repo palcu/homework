@@ -1,5 +1,6 @@
 def other_stuff():
 	sc = 2e-3
+	hexa = 0xf
 	escaped_string = 'escaped \
 string'
 	escaped = 'miau \' miau'
@@ -52,6 +53,8 @@ class Tokenizer():
 			return self.gettoken()
 		elif token_type == 'SPACE':
 			return self.gettoken()
+		if token_type == 'OPERATOR' and '0x' in token_val:
+			token_type = 'HEXA'
 
 		return token_type, token_val
 
@@ -76,7 +79,9 @@ class Dfa():
 		'CHARACTER_CAN_BE_FOLLOWED_BY_EQUAL': 15,
 		'GROUP_CHARACTER': 16,
 		'EXPONENT': 17,
-		'END': 999,
+		'HEXA': 180,
+		'ZERO': 19,
+		'END': -1,
 	}
 	NONPRODUCTING_STATES = [
 		STATES['ESCAPING'],
@@ -88,6 +93,7 @@ class Dfa():
 		self.TRANSITIONS = {
 			self.STATES['INITIAL']: [
 				[is_negative_sign, self.STATES['NEGATIVE_SIGN']],
+				[lambda x: x == '0', self.STATES['ZERO']],
 				[is_allowed_first_char_for_id, self.STATES['IDENT']],
 				[is_space, self.STATES['SPACE']],
 				[is_newline, self.STATES['NEWLINE']],
@@ -158,6 +164,15 @@ class Dfa():
 			self.STATES['EXPONENT']: [
 				[is_negative_sign, self.STATES['NEGATIVE_SIGN']],
 				[is_digit, self.STATES['NUMBER']],
+				[anything, self.STATES['END']],
+			],
+			self.STATES['ZERO']: [
+				[lambda x: x == 'x', self.STATES['NEGATIVE_SIGN']],
+				[is_digit, self.STATES['NUMBER']],
+				[anything, self.STATES['END']],
+			],
+			self.STATES['HEXA']: [
+				[is_hexa_char, self.STATES['HEXA']],
 				[anything, self.STATES['END']],
 			],
 		}
