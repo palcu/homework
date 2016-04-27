@@ -42,7 +42,7 @@ class Tokenizer():
 			token_val = len(token_val) - 1
 			token_type = 'INDENTATION'
 		elif token_type == 'CHARACTER_CAN_BE_FOLLOWED_BY_EQUAL':
-			token_type = 'CHARACTER'
+			token_type = 'OPERATOR'
 		elif token_type == 'STRING_SIMPLE_QUOTES_END':
 			token_type = 'STRING'
 		elif token_type == 'CHARACTER':
@@ -193,4 +193,4 @@ while True:
 	token = tokenizer.gettoken()
 	if not token:
 		break
-	print('{0: <11} => {1}'.format(*token))
+	print('{0: <16} => {1}'.format(*token))
