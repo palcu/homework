@@ -205,9 +205,6 @@ class Dfa():
 			if self.STATES[key] == self.states[-1]:
 				return [''.join(self.output[:-1]), key, self.position-1]
 
-	def transition(self, letter):
-		pass
-
 
 tokenizer = Tokenizer('python_lexical_analysis.py')
 while True:
