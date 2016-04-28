@@ -32,7 +32,7 @@ def is_hash(c):
     return c == '#'
 
 def is_simple_quote(c):
-    return c == "'"
+    return c == "'" or c =='"'
 
 def is_double_quote(c):
     return c == '"'

@@ -82,6 +82,7 @@ class Dfa():
 		'ZERO': 19,
 		'HEXA': 20,
 		'END': -1,
+		'ERROR': -2,
 	}
 	NONPRODUCTING_STATES = [
 		STATES['ESCAPING'],
@@ -103,7 +104,7 @@ class Dfa():
 				[is_hash, self.STATES['COMMENT']],
 				[is_simple_quote, self.STATES['STRING_SIMPLE_QUOTES']],
 				[is_double_quote, self.STATES['STRING_DOUBLE_QUOTES']],
-				[anything, self.STATES['END']],
+				[anything, self.STATES['ERROR']],
 			],
 			self.STATES['IDENT']: [
 				[is_allowed_char_for_id, self.STATES['IDENT']],
@@ -127,7 +128,7 @@ class Dfa():
 				[anything, self.STATES['END']],
 			],
 			self.STATES['FLOAT_NUMBER']: [
-				[is_digit, self.STATES['FLOAT_NUMBER']],
+				[is_digit, self.STATES['NUMBER']],
 				[anything, self.STATES['END']],
 			],
 			self.STATES['COMMENT']: [
@@ -137,7 +138,8 @@ class Dfa():
 			self.STATES['STRING_SIMPLE_QUOTES']: [
 				[is_escape, self.STATES['ESCAPING']],
 				[is_simple_quote, self.STATES['STRING_SIMPLE_QUOTES_END']],
-				[anything, self.STATES['STRING_SIMPLE_QUOTES']]
+				[is_newline, self.STATES['ERROR']],
+				[anything, self.STATES['STRING_SIMPLE_QUOTES']],
 			],
 			self.STATES['STRING_SIMPLE_QUOTES_END']: [
 				[anything, self.STATES['END']]
@@ -199,6 +201,8 @@ class Dfa():
 		raise Exception('No transition function')
 
 	def run(self):
+		# if self.STATES['ERROR'] == self.state:
+		# 	raise Exception('Error')
 		while self.state != self.STATES['END']:
 			self.consume()
 
@@ -207,9 +211,15 @@ class Dfa():
 				return [''.join(self.output[:-1]), key, self.position-1]
 
 
-tokenizer = Tokenizer('python_lexical_analysis.py')
+tokenizer = Tokenizer('/Users/alex/aici.txt')
 while True:
-	token = tokenizer.gettoken()
+	try:
+		token = tokenizer.gettoken()
+		# sleep(0.1)
+	except Exception:
+		print("Am ajuns la o eroare")
+		exit(0)
+
 	if not token:
 		break
 	print('{0: <16} => {1}'.format(*token))
