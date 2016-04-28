@@ -1,6 +1,5 @@
 def other_stuff():
 	sc = 2e3
-	hexa = 0xf
 	escaped_string = 'escaped \
 string'
 	escaped = 'miau \' miau'
@@ -34,6 +33,15 @@ class Tokenizer():
 		token_val, token_type, consumed_chars = dfa.run()
 
 		self.position += consumed_chars
+		MAPPER = {
+			'CHARACTER_CAN_BE_FOLLOWED_BY_EQUAL': 'OPERATOR',
+			'STRING_SIMPLE_QUOTES_END': 'STRING',
+			'CHARACTER': 'OPERATOR',
+			'GROUP_CHARACTER': 'GROUP_OPERATOR',
+		}
+
+		if token_type in MAPPER:
+			token_type = MAPPER[token_type]
 
 		if token_type == 'IDENT':
 			if token_val in self.KEYWORDS:
@@ -41,20 +49,10 @@ class Tokenizer():
 		elif token_type == 'NEWLINE':
 			token_val = len(token_val) - 1
 			token_type = 'INDENTATION'
-		elif token_type == 'CHARACTER_CAN_BE_FOLLOWED_BY_EQUAL':
-			token_type = 'OPERATOR'
-		elif token_type == 'STRING_SIMPLE_QUOTES_END':
-			token_type = 'STRING'
-		elif token_type == 'CHARACTER':
-			token_type = 'OPERATOR'
-		elif token_type == 'GROUP_CHARACTER':
-			token_type = 'GROUP_OPERATOR'
 		elif token_type == 'COMMENT':
 			return self.gettoken()
 		elif token_type == 'SPACE':
 			return self.gettoken()
-		if token_type == 'OPERATOR' and '0x' in token_val:
-			token_type = 'HEXA'
 
 		return token_type, token_val
 
@@ -68,10 +66,10 @@ class Dfa():
 		'CHARACTER': 4,
 		'NUMBER': 5,
 		'COMMENT': 6,
-		'STRING_SIMPLE_QUOTES': 7,
-		'STRING_DOUBLE_QUOTES': 8,
-		'STRING_SIMPLE_QUOTES_END': 9,
-		'STRING_DOUBLE_QUOTES_END': 10,
+		'STRING_SIMPLE_QUOTES': 37,
+		'STRING_DOUBLE_QUOTES': 38,
+		'STRING_SIMPLE_QUOTES_END': 39,
+		'STRING_DOUBLE_QUOTES_END': 40,
 		'NEGATIVE_SIGN': 11,
 		'FLOAT_NUMBER': 12,
 		'ESCAPING': 13,
@@ -79,8 +77,8 @@ class Dfa():
 		'CHARACTER_CAN_BE_FOLLOWED_BY_EQUAL': 15,
 		'GROUP_CHARACTER': 16,
 		'EXPONENT': 17,
-		'HEXA': 180,
 		'ZERO': 19,
+		'HEXA': 20,
 		'END': -1,
 	}
 	NONPRODUCTING_STATES = [
@@ -167,7 +165,7 @@ class Dfa():
 				[anything, self.STATES['END']],
 			],
 			self.STATES['ZERO']: [
-				[lambda x: x == 'x', self.STATES['NEGATIVE_SIGN']],
+				[lambda x: x == 'x', self.STATES['HEXA']],
 				[is_digit, self.STATES['NUMBER']],
 				[anything, self.STATES['END']],
 			],
@@ -202,7 +200,7 @@ class Dfa():
 			self.consume()
 
 		for key in self.STATES:
-			if self.STATES[key] == self.states[-1]:
+			if self.STATES[key] == max(self.states):
 				return [''.join(self.output[:-1]), key, self.position-1]
 
 
