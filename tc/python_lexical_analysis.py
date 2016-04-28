@@ -16,6 +16,8 @@ string'
 from helpers import *
 from time import sleep
 from sys import exit
+from collections import defaultdict
+from pprint import pprint
 
 
 class Tokenizer():
@@ -25,14 +27,15 @@ class Tokenizer():
 		with open(filepath) as stream:
 			self.source_code = stream.read()
 		self.position = 0
+		self.tabela = defaultdict(list)
 
 	def gettoken(self):
 		dfa = Dfa(self.source_code[self.position:])
 
 		# import ipdb; ipdb.set_trace()
 		token_val, token_type, consumed_chars = dfa.run()
-
 		self.position += consumed_chars
+
 		MAPPER = {
 			'CHARACTER_CAN_BE_FOLLOWED_BY_EQUAL': 'OPERATOR',
 			'STRING_SIMPLE_QUOTES_END': 'STRING',
@@ -49,11 +52,10 @@ class Tokenizer():
 		elif token_type == 'NEWLINE':
 			token_val = len(token_val) - 1
 			token_type = 'INDENTATION'
-		elif token_type == 'COMMENT':
-			return self.gettoken()
-		elif token_type == 'SPACE':
+		elif token_type in ['COMMENT', 'SPACE']:
 			return self.gettoken()
 
+		self.tabela[(token_type, token_val)].append(self.position - consumed_chars)
 		return token_type, token_val
 
 
@@ -181,6 +183,7 @@ class Dfa():
 
 	def consume(self):
 		if self.position == len(self.input):
+			pprint(tokenizer.tabela)
 			exit(0)
 
 		state = self.TRANSITIONS[self.state]
@@ -210,3 +213,4 @@ while True:
 	if not token:
 		break
 	print('{0: <16} => {1}'.format(*token))
+
