@@ -56,7 +56,7 @@ class Tokenizer():
 			return self.gettoken()
 
 		self.tabela[(token_type, token_val)].append(self.position - consumed_chars)
-		return token_type, token_val
+		return self.position - consumed_chars
 
 
 class Dfa():
@@ -214,13 +214,13 @@ class Dfa():
 tokenizer = Tokenizer('/Users/alex/aici.txt')
 while True:
 	try:
-		token = tokenizer.gettoken()
+		pozitie_de_caracter = tokenizer.gettoken()
 		# sleep(0.1)
 	except Exception:
 		print("Am ajuns la o eroare")
 		exit(0)
 
-	if not token:
-		break
-	print('{0: <16} => {1}'.format(*token))
+	for key in tokenizer.tabela:
+		if pozitie_de_caracter in tokenizer.tabela[key]:
+			print("{0} - {1}".format(*key))
 
